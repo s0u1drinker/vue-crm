@@ -1,33 +1,18 @@
 <template>
   <div class="sidebar">
-    <div class="sidebar-box menu">
-      <div class="userpanel">
-        <img :src="user.img" alt="" class="userpanel__img">
-        <span class="userpanel__username">{{ user.name }}</span>
-      </div>
-      <input type="checkbox" class="menu__toggle">
-      <div class="menu__button">
-        <span></span>
-      </div>
-    </div>
+    <Userpanel />
     <Navigation />
   </div>
 </template>
 
 <script>
+import Userpanel from '@/components/Userpanel'
 import Navigation from '@/components/Navigation'
 
 export default {
   name: 'Sidebar',
-  data () {
-    return {
-      user: {
-        name: 'Иван Иванов',
-        img: 'img/user.jpg'
-      }
-    }
-  },
   components: {
+    Userpanel,
     Navigation
   }
 }

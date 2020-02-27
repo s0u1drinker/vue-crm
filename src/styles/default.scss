@@ -1,3 +1,8 @@
-main{
+main {
   height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  @include transition(color);
 }
