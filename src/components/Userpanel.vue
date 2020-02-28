@@ -2,7 +2,7 @@
   <div class="userpanel">
     <i class="icon icon-user"></i>
     <span class="userpanel__username">{{ user.name }}</span>
-    <a class="userpanel__exit" href="#"><i class="icon icon-exit"></i></a>
+    <a class="userpanel__exit" href="#" @click="exit"><i class="icon icon-exit"></i></a>
   </div>
 </template>
 
@@ -14,6 +14,11 @@ export default {
       user: {
         name: 'Иван Иванов'
       }
+    }
+  },
+  methods: {
+    exit: (event) => {
+      alert('Stop it!')
     }
   }
 }
@@ -37,7 +42,7 @@ export default {
     display: flex;
 
     &:hover {
-      color: $green;
+      color: $cardio;
     }
   }
 }

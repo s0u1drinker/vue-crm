@@ -1,8 +1,8 @@
 <template>
-  <div class="sidebar">
-    <Userpanel />
+  <header>
     <Navigation />
-  </div>
+    <Userpanel />
+  </header>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ import Userpanel from '@/components/Userpanel'
 import Navigation from '@/components/Navigation'
 
 export default {
-  name: 'Sidebar',
+  name: 'Header',
   components: {
     Userpanel,
     Navigation
@@ -19,12 +19,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sidebar{
-  bottom: 0;
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 15rem;
 }
 </style>

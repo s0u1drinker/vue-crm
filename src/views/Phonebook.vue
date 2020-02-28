@@ -1,15 +1,15 @@
 <template>
-  <reference-book-layout>
+  <main-layout>
     Phonebook
-  </reference-book-layout>
+  </main-layout>
 </template>
 
 <script>
-import ReferenceBookLayout from '@/layouts/ReferenceBookLayout'
+import MainLayout from '@/layouts/MainLayout'
 
 export default {
   components: {
-    ReferenceBookLayout
+    MainLayout
   }
 }
 </script>

@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { Plugin } from 'vue-fragment'
 import Main from '../views/Main.vue'
 
 Vue.use(VueRouter)
+Vue.use(Plugin)
 
 const routes = [
   {
@@ -24,7 +26,9 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  linkActiveClass: '',
+  linkExactActiveClass: 'navigation__link_active'
 })
 
 export default router

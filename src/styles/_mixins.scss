@@ -1,3 +1,5 @@
 @mixin transition($property, $duration: .3s, $timing-function: ease-out) {
-  transition: $property $duration $timing-function;
+  transition-property: $property;
+  transition-duration: $duration;
+  transition-timing-function: $timing-function;
 }

@@ -1,12 +1,22 @@
 <template>
-  <main>
-    <slot />
-  </main>
+  <fragment>
+    <Header />
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+  </fragment>
 </template>
 
 <script>
+import Header from '@/components/Header'
+
 export default {
-  name: 'MainLayout'
+  name: 'MainLayout',
+  components: {
+    Header
+  }
 }
 </script>
 
