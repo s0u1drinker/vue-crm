@@ -113,9 +113,8 @@ export default {
   }
 
   &__list {
-    $width: 20rem;
     @include transition(left);
-
+    $width: 20rem;
     background-color: $dark;
     box-sizing: border-box;
     height: 100vh;

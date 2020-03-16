@@ -24,4 +24,33 @@ export default {
     width: 6rem;
   }
 }
+
+.form_searchform {
+  border: 1px solid $gray;
+  border-radius: .25rem;
+  box-shadow: 0 .125rem .25rem $gray_shadow;
+  display: flex;
+  overflow: hidden;
+  width: 40rem;
+
+  input[type="text"] {
+    padding: .75rem 1.25rem;
+    width: 100%;
+  }
+
+  button {
+    @include transition(background-color);
+    padding: 0 .75rem;
+    border-left: 1px solid $gray;
+
+    &:hover {
+      background-color: $gray_light;
+      cursor: pointer;
+    }
+
+    i.icon {
+      font-size: 1.5rem;
+    }
+  }
+}
 </style>
