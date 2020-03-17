@@ -4,9 +4,20 @@ body {
   min-height: 100vh;
 }
 
+@for $i from 1 through 6 {
+  h#{$i} {
+    margin: 0;
+  }
+}
+
 a {
   text-decoration: none;
   @include transition(color);
+}
+
+p {
+  line-height: 1.5;
+  margin: 0;
 }
 
 ul,
