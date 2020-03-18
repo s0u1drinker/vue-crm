@@ -1,7 +1,15 @@
 body {
   font-size: 18px;
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+}
+
+#app {
+  display: flex;
   min-height: 100vh;
+}
+
+main {
+  width: 100%;
 }
 
 @for $i from 1 through 6 {
@@ -27,18 +35,72 @@ ol {
   padding: 0;
 }
 
-.button,
-.input {
+button,
+input {
+  @include transition((background-color, color));
+  @include def-border-radius;
   background-color: transparent;
   border: 0 none;
   box-sizing: border-box;
   padding: .5rem 1.25rem;
 }
 
+button {
+  cursor: pointer;
+}
+
+.button {
+
+  &_primary {
+    background-color: $primary;
+    color: $white;
+
+    &:hover {
+      background-color: $primary_dark;
+    }
+
+    &.button-icon {
+
+      .icon {
+        background-color: darken($primary, 15%);
+      }
+    }
+  }
+
+  &_gray {
+    background-color: $gray;
+    color: $white;
+
+    &:hover {
+      background-color: $gray_darken;
+    }
+
+    &.button-icon {
+
+      .icon {
+        background-color: $gray_dark;
+      }
+    }
+  }
+}
+
+.button-icon {
+  $padding: .75rem;
+  align-items: center;
+  display: flex;
+  overflow: hidden;
+  padding: 0 $padding 0 0;
+
+  .icon {
+    margin-right: $padding;
+    padding: .5rem $padding;
+  }
+}
+
 .container {
   margin: 0 auto;
   padding: 3.25rem 0;
-  width: 60%;
+  width: 80%;
 }
 
 .flexbox {

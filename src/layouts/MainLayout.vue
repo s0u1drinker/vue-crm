@@ -1,21 +1,21 @@
 <template>
   <fragment>
-    <Header />
     <main>
       <div class="container">
         <slot />
       </div>
     </main>
+    <Sidebar />
   </fragment>
 </template>
 
 <script>
-import Header from '@/components/Header'
+import Sidebar from '@/components/Sidebar'
 
 export default {
   name: 'MainLayout',
   components: {
-    Header
+    Sidebar
   }
 }
 </script>

@@ -1,24 +1,35 @@
 <template>
   <div class="userpanel">
-    <i class="icon icon-user"></i>
-    <span class="userpanel__username">{{ user.name }}</span>
-    <a class="userpanel__exit" href="#" @click="exit"><i class="icon icon-exit"></i></a>
+    <div class="userpanel__username">
+      <i class="icon icon-user"></i>{{ getUsername }}
+    </div>
+    <div class="userpanel__list-info">
+      <ul>
+        <li>Сообщения: 0</li>
+        <li>Задачи: 0</li>
+      </ul>
+    </div>
+    <div class="userpanel__buttons">
+      <button class="button-icon button_gray" @click="settings"><i class="icon icon-settings"></i>Настройки</button>
+      <button class="button-icon button_primary" @click="exit"><i class="icon icon-logout"></i>Выход</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Userpanel',
-  data () {
-    return {
-      user: {
-        name: 'Иван Иванов'
-      }
-    }
+  computed: {
+    ...mapGetters(['getUsername'])
   },
   methods: {
     exit: (event) => {
       alert('Stop it!')
+    },
+    settings: () => {
+      alert('No!')
     }
   }
 }
@@ -26,24 +37,17 @@ export default {
 
 <style lang="scss" scoped>
 .userpanel {
-  align-items: center;
   display: flex;
-
-  .icon {
-    font-size: 1.25rem;
-  }
+  flex-direction: column;
 
   &__username {
-    margin: 0 2rem 0 .5rem;
-  }
-
-  &__exit {
-    color: inherit;
-    display: flex;
-
-    &:hover {
-      color: $cardio;
+    .icon {
+      font-size: 1.25rem;
     }
   }
+
+  &__list-info {}
+
+  &__buttons {}
 }
 </style>

@@ -3,3 +3,7 @@
   transition-duration: $duration;
   transition-timing-function: $timing-function;
 }
+
+@mixin def-border-radius {
+  border-radius: .25rem;
+}

@@ -1,7 +1,7 @@
 <template>
   <div class="info-panel">
     <ul class="info-panel__links">
-      <li v-for="(link, linkIndex) in getLinks" :key="link.id">
+      <li v-for="(link, linkIndex) in getInfoPanelLinks" :key="link.id">
         <router-link class="info-panel__link" :class="[ linkIndex === 0 ? 'info-panel__link_active' : '' ]" :to="{name: link.moduleName}">{{ link.title }}</router-link>
       </li>
     </ul>
@@ -33,7 +33,7 @@ export default {
     Advert
   },
   computed: {
-    ...mapGetters(['getEvents', 'getLinks', 'getAdverts'])
+    ...mapGetters(['getEvents', 'getInfoPanelLinks', 'getAdverts'])
   }
 }
 </script>
@@ -115,7 +115,22 @@ export default {
   }
 
   &__adverts {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 4rem;
+
+    .advert {
+      margin-left: 4%;
+      width: 30%;
+
+      &:nth-child(3n+1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(n+4) {
+        margin-top: 4%;
+      }
+    }
   }
 }
 </style>

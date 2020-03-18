@@ -26,8 +26,8 @@ export default {
 }
 
 .form_searchform {
+  @include def-border-radius;
   border: 1px solid $gray;
-  border-radius: .25rem;
   box-shadow: 0 .125rem .25rem $gray_shadow;
   display: flex;
   overflow: hidden;
