@@ -7,3 +7,7 @@
 @mixin def-border-radius {
   border-radius: .25rem;
 }
+
+@mixin def-box-shadow {
+  box-shadow: 0 .125rem .25rem $gray_shadow;
+}

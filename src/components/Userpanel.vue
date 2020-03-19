@@ -1,12 +1,13 @@
 <template>
   <div class="userpanel">
     <div class="userpanel__username">
-      <i class="icon icon-user"></i>{{ getUsername }}
+      <i class="icon icon-user"></i>
+      {{ getUsername }}
     </div>
     <div class="userpanel__list-info">
       <ul>
-        <li>Сообщения: 0</li>
-        <li>Задачи: 0</li>
+        <li><i class="icon icon-mail"></i>Сообщения: 0</li>
+        <li><i class="icon icon-tasks"></i>Задачи: 0</li>
       </ul>
     </div>
     <div class="userpanel__buttons">
@@ -37,17 +38,42 @@ export default {
 
 <style lang="scss" scoped>
 .userpanel {
+  @include def-box-shadow;
+  border-radius: .25rem .25rem 0 0;
   display: flex;
   flex-direction: column;
+  padding: 1rem;
 
   &__username {
+    align-items: center;
+    display: flex;
+    font-size: 1.25rem;
+    font-weight: bold;
+
     .icon {
-      font-size: 1.25rem;
+      font-size: 1.75rem;
+      margin-right: .5rem;
     }
   }
 
-  &__list-info {}
+  &__list-info {
+    margin-top: 1rem;
 
-  &__buttons {}
+    .icon {
+      font-size: 1rem;
+      margin-left: .375rem;
+      margin-right: .875rem;
+    }
+
+    li + li {
+      margin-top: .25rem;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+  }
 }
 </style>

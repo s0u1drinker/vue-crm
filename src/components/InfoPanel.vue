@@ -44,6 +44,7 @@ export default {
 
   &__links {
     display: flex;
+    margin-left: 8rem;
 
     li {
       display: flex;
@@ -70,6 +71,7 @@ export default {
   }
 
   &__body {
+    margin-left: 8rem;
     margin-top: 2rem;
   }
 

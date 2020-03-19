@@ -20,5 +20,11 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.navigation {}
+.navigation {
+  @include def-box-shadow;
+  background-color: $white;
+  border-radius: 0 0 .25rem .25rem;
+  border-top: 1px solid $gray_light;
+  padding: 1rem;
+}
 </style>
