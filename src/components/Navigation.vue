@@ -22,9 +22,17 @@ export default {
 <style lang='scss' scoped>
 .navigation {
   @include def-box-shadow;
+  @include def-border-radius;
   background-color: $white;
-  border-radius: 0 0 .25rem .25rem;
-  border-top: 1px solid $gray_light;
-  padding: 1rem;
+  border: 1px solid $gray_light;
+  margin-top: 1rem;
+
+  &__item {
+    padding: .5rem;
+  }
+
+  &__link {
+    color: inherit;
+  }
 }
 </style>

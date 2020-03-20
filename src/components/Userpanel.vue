@@ -38,8 +38,9 @@ export default {
 
 <style lang="scss" scoped>
 .userpanel {
+  @include def-border-radius;
   @include def-box-shadow;
-  border-radius: .25rem .25rem 0 0;
+  border: 1px solid $gray_light;
   display: flex;
   flex-direction: column;
   padding: 1rem;
