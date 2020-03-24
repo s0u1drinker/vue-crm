@@ -42,6 +42,7 @@ export default {
     @include transition(background-color);
     padding: 0 .75rem;
     border-left: 1px solid $gray;
+    border-radius: 0;
 
     &:hover {
       background-color: $gray_light;

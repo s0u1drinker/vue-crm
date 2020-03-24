@@ -4,19 +4,22 @@ const state = {
       id: '1',
       moduleName: 'Main',
       title: 'Главная',
-      showMain: false
+      showMain: false,
+      icon: 'home'
     },
     {
       id: '2',
       moduleName: 'Events',
       title: 'Список мероприятий',
-      showMain: true
+      showMain: true,
+      icon: 'calendar'
     },
     {
       id: '3',
       moduleName: 'Phonebook',
       title: 'Телефонный справочник',
-      showMain: true
+      showMain: true,
+      icon: 'phonebook'
     }
   ]
 }

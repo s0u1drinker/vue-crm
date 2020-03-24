@@ -3,9 +3,9 @@
 @font-face {
   font-family: '#{$icomoon-font-family}';
   src:
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?pm2eyp') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?pm2eyp') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?pm2eyp##{$icomoon-font-family}') format('svg');
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?ikepe2') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?ikepe2') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?ikepe2##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,6 +26,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-pin {
+  &:before {
+    content: $icon-pin; 
+  }
+}
+.icon-home {
+  &:before {
+    content: $icon-home; 
+  }
+}
+.icon-user {
+  &:before {
+    content: $icon-user; 
+  }
+}
+.icon-phonebook {
+  &:before {
+    content: $icon-phonebook; 
+  }
+}
+.icon-calendar {
+  &:before {
+    content: $icon-calendar; 
+  }
+}
 .icon-settings {
   &:before {
     content: $icon-settings; 
@@ -74,11 +99,6 @@
 .icon-search {
   &:before {
     content: $icon-search; 
-  }
-}
-.icon-user {
-  &:before {
-    content: $icon-user; 
   }
 }
 

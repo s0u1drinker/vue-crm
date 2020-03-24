@@ -20,7 +20,10 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar{
+  align-items: flex-end;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   flex: 1 0 auto;
   min-width: 23rem;

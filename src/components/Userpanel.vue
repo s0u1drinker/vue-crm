@@ -41,9 +41,11 @@ export default {
   @include def-border-radius;
   @include def-box-shadow;
   border: 1px solid $gray_light;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  width: 100%;
 
   &__username {
     align-items: center;
