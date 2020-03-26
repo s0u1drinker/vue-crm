@@ -11,3 +11,11 @@
 @mixin def-box-shadow {
   box-shadow: 0 .125rem .25rem $gray_shadow;
 }
+
+@mixin def-box-shadow-color($shadow_color) {
+  box-shadow: 0 .125rem .25rem $shadow_color;
+}
+
+@mixin def-box-shadow-no-color {
+  box-shadow: 0 .125rem .25rem;
+}

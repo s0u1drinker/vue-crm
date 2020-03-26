@@ -27,11 +27,17 @@ export default {
 
 .form_searchform {
   @include def-border-radius;
-  @include def-box-shadow;
+  @include def-box-shadow-no-color;
+  @include transition(color);
   border: 1px solid $gray;
+  color: $gray_shadow;
   display: flex;
   overflow: hidden;
   width: 40rem;
+
+  &:hover {
+    color: $gray_dark;
+  }
 
   input[type="text"] {
     padding: .75rem 1.25rem;
