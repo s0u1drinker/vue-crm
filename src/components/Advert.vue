@@ -26,7 +26,17 @@ export default {
   box-shadow: 0 .25rem .25rem $gray;
   box-sizing: border-box;
   border: 2px solid transparent;
+  margin: 0 0 0 4%;
   padding: 1rem;
+  width: 30%;
+
+  &:nth-child(3n+1) {
+    margin-left: 0;
+  }
+
+  &:nth-child(n+4) {
+    margin-top: 4%;
+  }
 
   &_attention {
     border-color: $cardio;
@@ -63,8 +73,6 @@ export default {
   .icon {
     font-size: 1.375rem;
   }
-
-  &__header {}
 
   &__text {
     margin-top: 1rem;

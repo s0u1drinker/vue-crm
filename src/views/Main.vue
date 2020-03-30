@@ -1,21 +1,27 @@
 <template>
   <main-layout>
+    <QuickAccessLinks />
     <SearchForm />
-    <InfoPanel />
+    <MainEvents />
+    <Adverts />
   </main-layout>
 </template>
 
 <script>
 import MainLayout from '@/layouts/MainLayout'
 
+import QuickAccessLinks from '@/components/QuickAccessLinks'
 import SearchForm from '@/components/SearchForm'
-import InfoPanel from '@/components/InfoPanel'
+import MainEvents from '@/components/MainEvents'
+import Adverts from '@/components/Adverts'
 
 export default {
   components: {
     MainLayout,
+    QuickAccessLinks,
     SearchForm,
-    InfoPanel
+    MainEvents,
+    Adverts
   }
 }
 </script>

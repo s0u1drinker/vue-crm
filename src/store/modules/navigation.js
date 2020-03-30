@@ -4,21 +4,21 @@ const state = {
       id: '1',
       moduleName: 'Main',
       title: 'Главная',
-      showMain: false,
+      quickAccess: false,
       icon: 'home'
     },
     {
       id: '2',
       moduleName: 'Events',
       title: 'Список мероприятий',
-      showMain: true,
+      quickAccess: true,
       icon: 'calendar'
     },
     {
       id: '3',
       moduleName: 'Phonebook',
       title: 'Телефонный справочник',
-      showMain: true,
+      quickAccess: true,
       icon: 'phonebook'
     }
   ]
@@ -28,8 +28,8 @@ const getters = {
   getNavLinks: state => {
     return state.navLinks
   },
-  getInfoPanelLinks: state => {
-    return state.navLinks.filter(link => link.showMain)
+  getQuickAccessLinks: state => {
+    return state.navLinks.filter(link => link.quickAccess)
   }
 }
 
