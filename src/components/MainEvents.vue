@@ -2,33 +2,28 @@
   <div class="m-events">
     <ul class="m-events__list">
       <li class="m-events__item" v-for="event in getEvents" :key="event.id">
-        <span>{{ getEventDay(event.timestamp) }}</span>
-        <span>{{ getEventMonth(event.timestamp) }}</span>
+        <span class="m-events__day">{{ getEventDatetime(event.id).day }}</span>
+        <span class="m-events__month">{{ getEventDatetime(event.id).month }}</span>
         <span class="m-events__title">{{ event.title }}</span>
+        <span class="m-events__place">{{ event.place }}</span>
+        <span class="m-events__time">{{ getEventDatetime(event.id).timeStart }}</span>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'MainEvents',
-  methods: {
-    getEventDay (timestamp) {
-      return new Date(timestamp * 1000).getDate()
-    },
-    getEventMonth (timestamp) {
-      return this.months[new Date(timestamp * 1000).getMonth()]
+  data: function () {
+    return {
+      event: {}
     }
   },
   computed: {
-    ...mapState(['months']),
-    ...mapGetters(['getEvents']),
-    eventDay: function (id) {
-      return this.getEvents
-    }
+    ...mapGetters(['getEvents', 'getEventDatetime'])
   }
 }
 </script>
