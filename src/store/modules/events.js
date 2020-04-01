@@ -3,64 +3,75 @@ const state = {
     {
       id: '1',
       timestamp: 1585200600,
+      day: '26',
+      month: 2,
+      timeStart: '09:30',
       place: 'Конференцзал',
       title: 'Общебольничная планерка',
-      descr: 'Еженедельная общебольничная планерка.'
+      descr: 'Еженедельная общебольничная планерка.',
+      type: 'high'
     },
     {
       id: '2',
       timestamp: 1585216800,
+      day: '26',
+      month: 2,
+      timeStart: '14:00',
       place: 'Конференцзал',
       title: 'Врачебная комиссия',
-      descr: 'Заседание врачебной комиссии'
+      descr: 'Заседание врачебной комиссии',
+      type: 'med'
     },
     {
       id: '3',
       timestamp: 1585220400,
+      day: '26',
+      month: 2,
+      timeStart: '15:00',
       place: 'Конференцзал',
       title: 'Телемедицинская консультация с ФГБУ "НМИЦ им. В. А. Алмазова" МЗ РФ',
-      descr: ''
+      descr: '',
+      type: 'low'
     },
     {
       id: '4',
       timestamp: 1585303200,
+      day: '27',
+      month: 2,
+      timeStart: '14:00',
       place: 'Конференцзал',
       title: 'Врачебная комиссия',
-      descr: 'Заседание врачебной комиссии'
+      descr: 'Заседание врачебной комиссии',
+      type: 'med'
     },
     {
       id: '5',
       timestamp: 1585306800,
+      day: '27',
+      month: 2,
+      timeStart: '15:00',
       place: 'Конференцзал',
       title: 'Обучение английскому языку',
-      descr: ''
+      descr: '',
+      type: 'low'
     },
     {
       id: '6',
       timestamp: 1587965400,
+      day: '27',
+      month: 3,
+      timeStart: '09:00',
       place: '',
       title: 'День открытых дверей',
-      descr: ''
+      descr: '',
+      type: 'med'
     }
-  ],
-  months: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+  ]
 }
 
 const getters = {
   getEvents: state => {
     return state.events
-  },
-  getEventDatetime: state => id => {
-    const event = state.events.find(evt => evt.id === id)
-    const eventDatetime = new Date(event.timestamp * 1000)
-    const hours = eventDatetime.getHours()
-    const minutes = eventDatetime.getMinutes()
-
-    return {
-      day: eventDatetime.getDate(),
-      month: state.months[eventDatetime.getMonth()],
-      timeStart: (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes)
-    }
   }
 }
 
