@@ -72,6 +72,9 @@ const state = {
 const getters = {
   getEvents: state => {
     return state.events
+  },
+  getEventsToday: state => {
+    return state.events.filter(event => event.day === '26')
   }
 }
 

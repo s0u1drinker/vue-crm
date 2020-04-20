@@ -1,15 +1,12 @@
 <template>
   <div class="m-events">
     <ul class="m-events__list">
-      <li class="m-events__item" :class="['m-events__item_' + event.type]" v-for="event in getEvents" :key="event.id" :data-time="event.timestamp">
-        <div class="m-events__day-wrapper">
-          <span class="m-events__day">{{ event.day }}</span>
-          <span class="m-events__month">{{ months[event.month] }}</span>
-        </div>
+      <li class="m-events__item" :class="['m-events__item_' + event.type]" v-for="event in getEventsToday" :key="event.id" :data-time="event.timestamp">
+        <div class="m-events__time">{{ event.timeStart }}</div>
         <div class="m-events__event">
           <span class="m-events__title">{{ event.title }}</span>
+          <span class="m-events__descr" v-if="event.descr">{{ event.descr }}</span>
           <span class="m-events__place" v-if="event.place">{{ event.place }}</span>
-          <span class="m-events__time">Начало в: {{ event.timeStart }}</span>
         </div>
       </li>
     </ul>
@@ -27,7 +24,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getEvents'])
+    ...mapGetters(['getEventsToday'])
   }
 }
 </script>
@@ -44,18 +41,19 @@ export default {
   }
 
   &__item {
-    $hoverOffset: .5rem;
-    $widthBefore: .25rem;
     @include transition(padding);
     display: flex;
-    padding: 1rem 1rem 1rem calc(1rem + #{$widthBefore});
+    padding: 1rem;
     position: relative;
 
     &:hover {
-      padding-left: calc(1rem + #{$hoverOffset + $widthBefore});
 
       &::before {
-        width: calc(#{$widthBefore + $hoverOffset});
+        width: 6.5rem;
+      }
+
+      .m-events__time {
+        color: $white;
       }
     }
 
@@ -66,7 +64,7 @@ export default {
       left: 0;
       position: absolute;
       top: 0;
-      width: $widthBefore;
+      width: .5rem;
     }
 
     & + & {
@@ -95,18 +93,35 @@ export default {
     }
   }
 
-  &__day-wrapper {}
+  &__time {
+    @include transition(color);
+    align-items: center;
+    display: flex;
+    font-size: 1.75rem;
+    justify-content: center;
+    position: relative;
+    width: 4.5rem;
+    z-index: 1;
+  }
 
-  &__day {}
+  &__event {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+  }
 
-  &__month {}
+  &__title {
+    font-weight: bold;
+  }
 
-  &__event {}
+  &__descr {
+    margin-top: .25rem;
+  }
 
-  &__title {}
-
-  &__place {}
-
-  &__time {}
+  &__place {
+    color: $gray_dark;
+    font-style: italic;
+    margin-top: .25rem;
+  }
 }
 </style>
