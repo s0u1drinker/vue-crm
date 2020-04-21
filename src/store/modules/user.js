@@ -1,5 +1,6 @@
 const state = {
   user: {
+    auth: 0,
     name: 'Иван Иванов',
     email: '',
     config: {
@@ -15,6 +16,10 @@ const getters = {
 
   getUserConfig: state => {
     return state.user.config
+  },
+
+  getUserAuth: state => {
+    return state.user.auth
   }
 }
 

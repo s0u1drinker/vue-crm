@@ -1,18 +1,28 @@
 <template>
   <div class="sidebar">
-    <Userpanel />
-    <Navigation />
+    <fragment v-if="getUserAuth">
+      <Userpanel />
+      <Navigation />
+    </fragment>
+    <Authpanel v-else />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import Userpanel from '@/components/Userpanel'
+import Authpanel from '@/components/Authpanel'
 import Navigation from '@/components/Navigation'
 
 export default {
   name: 'Sidebar',
+  computed: {
+    ...mapGetters(['getUserAuth'])
+  },
   components: {
     Userpanel,
+    Authpanel,
     Navigation
   }
 }
@@ -20,7 +30,6 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar{
-  align-items: flex-end;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

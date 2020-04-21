@@ -5,10 +5,12 @@ body {
 
 #app {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 main {
+  overflow: auto;
   width: 100%;
 }
 
@@ -36,6 +38,7 @@ ol {
 }
 
 button,
+.button,
 input {
   @include transition((background-color, color));
   @include def-border-radius;
@@ -79,6 +82,22 @@ button {
 
       .icon {
         background-color: $gray_dark;
+      }
+    }
+  }
+
+  &_lightgray {
+    background-color: $gray;
+    color: $white;
+
+    &:hover {
+      background-color: $gray_dark;
+    }
+
+    &.button-icon {
+
+      .icon {
+        background-color: $gray;
       }
     }
   }

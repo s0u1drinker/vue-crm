@@ -9,10 +9,23 @@ const state = {
       place: 'Конференцзал',
       title: 'Общебольничная планерка',
       descr: 'Еженедельная общебольничная планерка.',
-      type: 'high'
+      type: 'high',
+      icon: 'planning_meeting'
     },
     {
       id: '2',
+      timestamp: 1585220400,
+      day: '26',
+      month: 2,
+      timeStart: '11:00',
+      place: 'Конференцзал',
+      title: 'Телеконференция с ФГБУ "НМИЦ им. ак. Е.Н.Мешалкина" МЗ РФ',
+      descr: 'Лекция: Современные стратегии профилактики кардиотоксичности противоопухолевой терапии',
+      type: 'low',
+      icon: 'teleconference'
+    },
+    {
+      id: '3',
       timestamp: 1585216800,
       day: '26',
       month: 2,
@@ -20,10 +33,11 @@ const state = {
       place: 'Конференцзал',
       title: 'Врачебная комиссия',
       descr: 'Заседание врачебной комиссии',
-      type: 'med'
+      type: 'med',
+      icon: 'conversation'
     },
     {
-      id: '3',
+      id: '4',
       timestamp: 1585220400,
       day: '26',
       month: 2,
@@ -31,10 +45,11 @@ const state = {
       place: 'Конференцзал',
       title: 'Телемедицинская консультация с ФГБУ "НМИЦ им. В. А. Алмазова" МЗ РФ',
       descr: '',
-      type: 'low'
+      type: 'low',
+      icon: 'conference'
     },
     {
-      id: '4',
+      id: '5',
       timestamp: 1585303200,
       day: '27',
       month: 2,
@@ -42,10 +57,11 @@ const state = {
       place: 'Конференцзал',
       title: 'Врачебная комиссия',
       descr: 'Заседание врачебной комиссии',
-      type: 'med'
+      type: 'med',
+      icon: ''
     },
     {
-      id: '5',
+      id: '6',
       timestamp: 1585306800,
       day: '27',
       month: 2,
@@ -53,10 +69,11 @@ const state = {
       place: 'Конференцзал',
       title: 'Обучение английскому языку',
       descr: '',
-      type: 'low'
+      type: 'low',
+      icon: ''
     },
     {
-      id: '6',
+      id: '7',
       timestamp: 1587965400,
       day: '27',
       month: 3,
@@ -64,7 +81,8 @@ const state = {
       place: '',
       title: 'День открытых дверей',
       descr: '',
-      type: 'med'
+      type: 'med',
+      icon: ''
     }
   ]
 }

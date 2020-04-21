@@ -1,11 +1,11 @@
 <template>
   <fragment>
+    <Sidebar />
     <main>
       <div class="container">
         <slot />
       </div>
     </main>
-    <Sidebar />
   </fragment>
 </template>
 

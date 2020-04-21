@@ -8,6 +8,7 @@
           <span class="m-events__descr" v-if="event.descr">{{ event.descr }}</span>
           <span class="m-events__place" v-if="event.place">{{ event.place }}</span>
         </div>
+        <i class="icon" :class="['icon-' + event.icon]"></i>
       </li>
     </ul>
   </div>
@@ -38,12 +39,13 @@ export default {
     @include def-border-radius;
     @include def-box-shadow;
     border: 1px solid $border_color;
+    overflow: hidden;
   }
 
   &__item {
     @include transition(padding);
     display: flex;
-    padding: 1rem;
+    padding: 1rem 4.5rem 1rem 1rem;
     position: relative;
 
     &:hover {
@@ -55,6 +57,10 @@ export default {
       .m-events__time {
         color: $white;
       }
+
+      .icon {
+        right: 1rem;
+      }
     }
 
     &::before {
@@ -64,7 +70,8 @@ export default {
       left: 0;
       position: absolute;
       top: 0;
-      width: .5rem;
+      width: 0;
+      z-index: -1;
     }
 
     & + & {
@@ -76,12 +83,20 @@ export default {
       &::before {
         background-color: $cardio;
       }
+
+      .icon {
+        color: $cardio;
+      }
     }
 
     &_med {
 
       &::before {
         background-color: $warning;
+      }
+
+      .icon {
+        color: $warning;
       }
     }
 
@@ -90,6 +105,19 @@ export default {
       &::before {
         background-color: $success;
       }
+
+      .icon {
+        color: $success;
+      }
+    }
+
+    .icon {
+      @include transition(right);
+      font-size: 2.5rem;
+      position: absolute;
+      right: -4.5rem;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 
