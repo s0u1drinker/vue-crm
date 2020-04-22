@@ -6,10 +6,12 @@
 
 <script>
 export default {
-  name: 'SearchLayout'
+  name: 'AuthRegLayout'
 }
 </script>
 
 <style lang="scss" scoped>
-
+main{
+  background-color: $dark;
+}
 </style>
