@@ -93,11 +93,11 @@ export default {
     background-color: $white;
     border-radius: 50%;
     color: $gray;
-    left: 0;
+    right: 0;
     padding: .5rem;
     position: absolute;
     top: 0;
-    transform: translate(-25%, -50%);
+    transform: translate(25%, -50%);
 
     &:hover {
       color: inherit;

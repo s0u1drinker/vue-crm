@@ -27,10 +27,10 @@ export default {
   },
   methods: {
     exit: (event) => {
-      alert('Stop it!')
+      alert('Wait! I will be gentle with you. Maybe...')
     },
     settings: () => {
-      alert('No!')
+      alert('Nothing to config =(')
     }
   }
 }

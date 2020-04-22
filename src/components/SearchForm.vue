@@ -1,16 +1,26 @@
 <template>
   <div class="searchform">
     <img src="@/assets/logo.svg" alt="" class="logo">
-    <form action="/" class="form form_searchform">
-      <input type="text" class="input" id="searchtext" placeholder="Введите номер документа/дату/отправителя">
-      <button class="button"><i class="icon icon-search"></i></button>
+    <form action="/" class="form form_searchform" v-on:submit.prevent>
+      <input type="text" class="input" id="searchtext" placeholder="Введите номер документа/дату/отправителя" v-model="searchText">
+      <button class="button"><i class="icon icon-search" @click="search"></i></button>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SearchForm'
+  name: 'SearchForm',
+  data () {
+    return {
+      searchText: ''
+    }
+  },
+  methods: {
+    search: function () {
+      alert('I will not look for this: ' + this.searchText)
+    }
+  }
 }
 </script>
 

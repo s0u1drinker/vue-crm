@@ -30,6 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar{
+  align-items: flex-end;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

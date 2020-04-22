@@ -7,8 +7,8 @@ const state = {
       month: 2,
       timeStart: '09:30',
       place: 'Конференцзал',
-      title: 'Общебольничная планерка',
-      descr: 'Еженедельная общебольничная планерка.',
+      title: 'Еженедельная общебольничная планерка',
+      descr: '',
       type: 'high',
       icon: 'planning_meeting'
     },
@@ -31,8 +31,8 @@ const state = {
       month: 2,
       timeStart: '14:00',
       place: 'Конференцзал',
-      title: 'Врачебная комиссия',
-      descr: 'Заседание врачебной комиссии',
+      title: 'Заседание врачебной комиссии',
+      descr: '',
       type: 'med',
       icon: 'conversation'
     },
@@ -44,7 +44,7 @@ const state = {
       timeStart: '15:00',
       place: 'Конференцзал',
       title: 'Телемедицинская консультация с ФГБУ "НМИЦ им. В. А. Алмазова" МЗ РФ',
-      descr: '',
+      descr: 'Пациент: Иванов И.В.',
       type: 'low',
       icon: 'conference'
     },

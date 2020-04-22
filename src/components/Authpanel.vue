@@ -1,8 +1,12 @@
 <template>
-  <div class="authpanel">
-    <a href="#">Подать заявку</a>
-    <a href="#" class="button button_lightgray">Войти</a>
-  </div>
+  <ul class="authpanel">
+    <li class="authpanel__item">
+      <a href="/registration">Заявка на регистрацию</a>
+    </li>
+    <li class="authpanel__item">
+      <a href="/auth" class="button button_lightgray">Войти</a>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -15,26 +19,38 @@ export default {
 .authpanel {
   @include def-border-radius;
   @include def-box-shadow;
-  align-items: center;
   border: 1px solid $gray_light;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  padding: 0 1rem;
   width: 100%;
+
+  &__item {
+    padding: 1rem 0;
+    position: relative;
+    text-align: center;
+
+    & + & {
+
+      &::before {
+        background-color: $gray_light;
+        content: "";
+        height: 1px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+    }
+  }
 
   a {
 
     &:not(.button) {
-      color: $gray_dark;
+      color: $black;
 
       &:hover {
         color: $cardio;
       }
-    }
-
-    & + a {
-      margin-top: 1rem;
     }
   }
 }
