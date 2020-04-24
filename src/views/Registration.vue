@@ -1,5 +1,5 @@
 <template>
-  <auth-reg-layout>
+  <auth-reg-layout bg-type="reg">
     Registration
   </auth-reg-layout>
 </template>
