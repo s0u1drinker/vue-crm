@@ -36,13 +36,18 @@ export default {
   &_auth {
     background-image: url('../assets/img/bg/bg_auth.jpg');
 
-    .form-wrappe {}
+    .form-wrapper {
+      left: 50%;
+      top: 42%;
+      transform: translate(-50%, -50%);
+      width: 27rem;
+    }
   }
 
   &_reg {
     background-image: url('../assets/img/bg/bg_reg.jpg');
 
-    .form-wrappe {}
+    .form-wrapper {}
   }
 
   .form-wrapper {
