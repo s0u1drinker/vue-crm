@@ -47,7 +47,12 @@ export default {
   &_reg {
     background-image: url('../assets/img/bg/bg_reg.jpg');
 
-    .form-wrapper {}
+    .form-wrapper {
+      left: 12.5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30rem;
+    }
   }
 
   .form-wrapper {

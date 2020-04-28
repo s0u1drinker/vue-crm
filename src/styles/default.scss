@@ -1,5 +1,5 @@
 body {
-  font-size: 18px;
+  font-size: $font-size;
   font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
 }
 
@@ -36,87 +36,12 @@ ol {
   padding: 0;
 }
 
-button,
-.button,
 input {
-  @include transition((background-color, color));
   @include def-border-radius;
   background-color: transparent;
   border: 0 none;
   box-sizing: border-box;
   padding: .5rem 1.25rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-a.button {
-  display: inline-block;
-}
-
-.button {
-
-  &_primary {
-    background-color: $primary;
-    color: $white;
-
-    &:hover {
-      background-color: $primary_dark;
-    }
-
-    &.button-icon {
-
-      .icon {
-        background-color: darken($primary, 15%);
-      }
-    }
-  }
-
-  &_gray {
-    background-color: $gray;
-    color: $white;
-
-    &:hover {
-      background-color: $gray_darken;
-    }
-
-    &.button-icon {
-
-      .icon {
-        background-color: $gray_dark;
-      }
-    }
-  }
-
-  &_lightgray {
-    background-color: $gray;
-    color: $white;
-
-    &:hover {
-      background-color: $gray_dark;
-    }
-
-    &.button-icon {
-
-      .icon {
-        background-color: $gray;
-      }
-    }
-  }
-}
-
-.button-icon {
-  $padding: .75rem;
-  align-items: center;
-  display: flex;
-  overflow: hidden;
-  padding: 0 $padding 0 0;
-
-  .icon {
-    margin-right: $padding;
-    padding: .5rem $padding;
-  }
 }
 
 .container {
@@ -128,3 +53,6 @@ a.button {
 .flexbox {
   display: flex;
 }
+
+@import 'button';
+@import 'form';

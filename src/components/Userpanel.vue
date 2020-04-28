@@ -21,7 +21,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Userpanel',
+  name: 'UserPanel',
   computed: {
     ...mapGetters(['getUsername'])
   },

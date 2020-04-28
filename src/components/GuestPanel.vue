@@ -1,9 +1,9 @@
 <template>
-  <ul class="authpanel">
-    <li class="authpanel__item">
+  <ul class="guestpanel">
+    <li class="guestpanel__item">
       <a href="/registration">Заявка на регистрацию</a>
     </li>
-    <li class="authpanel__item">
+    <li class="guestpanel__item">
       <a href="/auth" class="button button_lightgray">Войти</a>
     </li>
   </ul>
@@ -11,12 +11,12 @@
 
 <script>
 export default {
-  name: 'Authpanel'
+  name: 'GuestPanel'
 }
 </script>
 
 <style lang="scss" scoped>
-.authpanel {
+.guestpanel {
   @include def-border-radius;
   @include def-box-shadow;
   border: 1px solid $gray_light;

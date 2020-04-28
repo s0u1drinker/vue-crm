@@ -1,18 +1,18 @@
 <template>
   <div class="sidebar">
     <fragment v-if="getUserAuth">
-      <Userpanel />
+      <UserPanel />
       <Navigation />
     </fragment>
-    <Authpanel v-else />
+    <GuestPanel v-else />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
-import Userpanel from '@/components/Userpanel'
-import Authpanel from '@/components/Authpanel'
+import UserPanel from '@/components/UserPanel'
+import GuestPanel from '@/components/GuestPanel'
 import Navigation from '@/components/Navigation'
 
 export default {
@@ -21,8 +21,8 @@ export default {
     ...mapGetters(['getUserAuth'])
   },
   components: {
-    Userpanel,
-    Authpanel,
+    UserPanel,
+    GuestPanel,
     Navigation
   }
 }
