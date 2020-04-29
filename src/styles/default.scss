@@ -36,12 +36,20 @@ ol {
   padding: 0;
 }
 
-input {
+input,
+select {
   @include def-border-radius;
   background-color: transparent;
   border: 0 none;
   box-sizing: border-box;
+}
+
+input {
   padding: .5rem 1.25rem;
+}
+
+select {
+  padding: .5rem 1rem;
 }
 
 .container {

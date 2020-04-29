@@ -51,7 +51,8 @@
       margin-top: .75rem;
     }
 
-    input {
+    input,
+    select {
       @include def-border-radius;
       @include transition(border-color);
       border: 1px solid $gray;
@@ -61,7 +62,9 @@
     }
 
     input:focus,
-    &_filled > input {
+    select:focus,
+    &_filled > input,
+    &_filled > select {
       border-color: $primary;
     }
 
@@ -78,6 +81,7 @@
     }
 
     input:focus ~ label,
+    select:focus ~ label,
     &_filled > label {
       background-color: $white;
       color: $primary;

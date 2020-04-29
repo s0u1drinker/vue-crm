@@ -4,6 +4,7 @@ import events from './modules/events'
 import navigation from './modules/navigation'
 import adverts from './modules/adverts'
 import user from './modules/user'
+import organization from './modules/organization'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     events,
     navigation,
     adverts,
-    user
+    user,
+    organization
   }
 })
