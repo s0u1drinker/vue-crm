@@ -20,20 +20,20 @@
         <label for="patronymic">Отчество</label>
       </div>
       <div class="form__element">
-        <Select
-          id="position"
-          label="Должность"
-          :list="getPositions"
-        />
+        <select name="position" id="position">
+          <option value="-1"></option>
+          <option v-for="position in getPositions" :value="position.id" :key="position.id">{{ position.name }}</option>
+        </select>
+        <label for="position">Должность</label>
       </div>
       <div class="form__element">
-        <Select
-          id="department"
-          label="Подразделение"
-          :list="getDepartments"
-        />
+        <select name="department" id="department">
+          <option value="-1"></option>
+          <option v-for="department in getDepartments" :value="department.id" :key="department.id">{{ department.name }}</option>
+        </select>
+        <label for="department">Подразделение</label>
       </div>
-      <span class="form__notification"></span>
+      <div class="form__notification">{{ formError }}</div>
     </div>
     <div class="form__buttons">
       <a href="/auth">У меня есть учетная запись</a>
@@ -45,18 +45,19 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import Select from '@/components/Select'
-
 export default {
   name: 'RegForm',
-  components: {
-    Select
+  data: () => {
+    return {
+      formError: ''
+    }
   },
   computed: {
     ...mapGetters(['getPositions', 'getDepartments'])
   },
   methods: {
-    reg: () => {
+    reg: function () {
+      this.formError = 'No vacancy!'
       alert('No vacancy!')
     }
   }

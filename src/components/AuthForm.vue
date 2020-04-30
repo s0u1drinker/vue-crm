@@ -15,7 +15,7 @@
         <input type="text" id="pass" />
         <label for="pass">Пароль</label>
       </div>
-      <span class="form__notification"></span>
+      <div class="form__notification">{{ formError }}</div>
     </div>
     <div class="form__buttons">
       <a href="/registration">Зарегистрироваться</a>
@@ -27,8 +27,14 @@
 <script>
 export default {
   name: 'AuthForm',
+  data: () => {
+    return {
+      formError: ''
+    }
+  },
   methods: {
-    auth: () => {
+    auth: function () {
+      this.formError = 'Don`t touch this button, dude!'
       alert('Don`t touch this!')
     }
   }
