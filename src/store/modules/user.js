@@ -1,7 +1,7 @@
 const state = {
   user: {
-    auth: 0,
-    name: 'Иван Иванов',
+    auth: false,
+    name: '',
     email: '',
     config: {
       pinNavigation: false
@@ -24,6 +24,10 @@ const getters = {
 }
 
 const mutations = {
+  addUserInfo (state, name) {
+    state.user.auth = true
+    state.user.name = name
+  },
   togglePinNavigation (state) {
     state.user.config.pinNavigation = !state.user.config.pinNavigation
   }

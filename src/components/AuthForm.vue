@@ -7,12 +7,12 @@
       <h2>Вход в систему</h2>
     </div>
     <div class="form__content">
-      <div class="form__element">
-        <input type="text" id="login" />
+      <div class="form__element" :class="[login.length > 0 ? 'form__element_filled' : '']">
+        <input type="text" id="login" v-model.trim="login" />
         <label for="login">Логин</label>
       </div>
-      <div class="form__element">
-        <input type="text" id="pass" />
+      <div class="form__element" :class="[pass.length > 0 ? 'form__element_filled' : '']">
+        <input type="password" id="pass" v-model.trim="pass" />
         <label for="pass">Пароль</label>
       </div>
       <div class="form__notification">{{ formError }}</div>
@@ -25,17 +25,37 @@
 </template>
 
 <script>
+import AuthService from '@/services/AuthService'
+
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'AuthForm',
   data: () => {
     return {
+      login: '',
+      pass: '',
       formError: ''
     }
   },
   methods: {
-    auth: function () {
-      this.formError = 'Don`t touch this button, dude!'
-      alert('Don`t touch this!')
+    ...mapMutations(['addUserInfo']),
+    auth: async function () {
+      const response = await AuthService.auth({
+        login: this.login,
+        pass: this.pass
+      })
+
+      if (response.data.err) {
+        this.formError = response.data.descr
+      } else {
+        if (response.data.auth) {
+          this.addUserInfo(response.data.username)
+          this.$router.push('/')
+        } else {
+          this.formError = 'Что-то пошло не так. Поторите запрос.'
+        }
+      }
     }
   }
 }
