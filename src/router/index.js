@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { Plugin } from 'vue-fragment'
+
 import Main from '../views/Main.vue'
 
 Vue.use(VueRouter)
@@ -10,27 +11,42 @@ const routes = [
   {
     path: '/',
     name: 'Main',
-    component: Main
+    component: Main,
+    meta: {
+      checkAuth: true
+    }
   },
   {
     path: '/phonebook',
     name: 'Phonebook',
-    component: () => import('../views/Phonebook.vue')
+    component: () => import('../views/Phonebook.vue'),
+    meta: {
+      checkAuth: true
+    }
   },
   {
     path: '/events',
     name: 'Events',
-    component: () => import('../views/Events.vue')
+    component: () => import('../views/Events.vue'),
+    meta: {
+      checkAuth: true
+    }
   },
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import('../views/Auth.vue')
+    component: () => import('../views/Auth.vue'),
+    meta: {
+      notAuth: true
+    }
   },
   {
     path: '/registration',
     name: 'Registration',
-    component: () => import('../views/Reg.vue')
+    component: () => import('../views/Reg.vue'),
+    meta: {
+      notAuth: true
+    }
   },
   {
     path: '*',

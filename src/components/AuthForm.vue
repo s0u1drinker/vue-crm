@@ -19,7 +19,7 @@
     </div>
     <div class="form__buttons">
       <a href="/registration">Зарегистрироваться</a>
-      <button class="button button_primary" @click="auth">Войти</button>
+      <button class="button button_primary" @click="logIn">Войти</button>
     </div>
   </form>
 </template>
@@ -39,9 +39,9 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['addUserInfo']),
-    auth: async function () {
-      const response = await AuthService.auth({
+    ...mapMutations(['userLogIn']),
+    logIn: async function () {
+      const response = await AuthService.login({
         login: this.login,
         pass: this.pass
       })
@@ -50,11 +50,20 @@ export default {
         this.formError = response.data.descr
       } else {
         if (response.data.auth) {
-          this.addUserInfo(response.data.username)
+          this.userLogIn(response.data.username)
           this.$router.push('/')
         } else {
           this.formError = 'Что-то пошло не так. Поторите запрос.'
         }
+      }
+    },
+    logout: async function () {
+      const response = await AuthService.logout()
+
+      if (response.data.err) {
+        alert('Возникла непредвиденная ошибка!')
+      } else {
+        this.$router.push('/')
       }
     }
   }

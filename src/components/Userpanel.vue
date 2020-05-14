@@ -12,13 +12,15 @@
     </div>
     <div class="userpanel__buttons">
       <button class="button-icon button_gray" @click="settings"><i class="icon icon-settings"></i>Настройки</button>
-      <button class="button-icon button_primary" @click="exit"><i class="icon icon-logout"></i>Выход</button>
+      <button class="button-icon button_primary" @click="logOut"><i class="icon icon-logout"></i>Выход</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import AuthService from '@/services/AuthService'
+
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'UserPanel',
@@ -26,8 +28,15 @@ export default {
     ...mapGetters(['getUsername'])
   },
   methods: {
-    exit: (event) => {
-      alert('Wait! I will be gentle with you. Maybe...')
+    ...mapMutations(['userLogOut']),
+    logOut: async function () {
+      const response = await AuthService.logout()
+
+      if (response.data.err) {
+        alert('Возникла непредвиденная ошибка!')
+      } else {
+        this.userLogOut()
+      }
     },
     settings: () => {
       alert('Nothing to config =(')
