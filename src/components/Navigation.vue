@@ -42,11 +42,12 @@ export default {
   &_fixed {
     width: 100%;
 
-    .navigation__link {
+    .navigation__link span {
+      opacity: 1;
+    }
 
-      span {
-        opacity: 1;
-      }
+    .navigation__link:not(.navigation__link_active) .icon {
+      color: $black;
     }
   }
 
@@ -81,10 +82,19 @@ export default {
       font-size: 1.75rem;
     }
 
+    &:not(&_active) .icon {
+      color: $gray_dark;
+    }
+
     span {
       @include transition(opacity);
       margin-left: .5rem;
       opacity: 0;
+    }
+
+    &_active {
+      color: $cardio;
+      pointer-events: none;
     }
   }
 

@@ -1,10 +1,10 @@
 <template>
   <ul class="guestpanel">
     <li class="guestpanel__item">
-      <a href="/registration">Заявка на регистрацию</a>
+      <router-link to="/registration">Заявка на регистрацию</router-link>
     </li>
     <li class="guestpanel__item">
-      <a href="/auth" class="button button_lightgray">Войти</a>
+      <router-link class="button button_lightgray" to="/auth">Войти</router-link>
     </li>
   </ul>
 </template>

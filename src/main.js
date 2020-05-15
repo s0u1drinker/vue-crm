@@ -9,21 +9,29 @@ import AuthService from '@/services/AuthService'
 
 Vue.config.productionTip = false
 
-router.beforeEach((to, from, next) => {
-  AuthService.check()
-    .then((res) => {
-      if (res.data.auth) {
-        store.commit('userLogIn', res.data.username)
-      }
+router.beforeEach(async (to, from, next) => {
+  // Если переход осуществлялся напрямую
+  if (from.name === null) {
+    // Проверяем авторизован ли пользователь
+    const check = await AuthService.check()
 
-      if ((to.meta.notAuth) && (store.getters.getUserAuth)) {
-        // Если переход осуществляется авторизованным пользователем на страницу авторизации или регистрации
-        router.push('/')
-      }
-    })
-    .finally(() => {
-      next()
-    })
+    if (check.data.err) {
+      // Если проверка по какой-то причине не удалась
+      // TODO: Ошибку необходимо записать в БД
+    }
+
+    if (check.data.auth) {
+      // Если пользователь авторизован - запускаем соответствующую мутацию
+      store.commit('userLogIn', check.data.username)
+    }
+  }
+
+  // Если переход осуществляется авторизованным пользователем на страницу авторизации или регистрации
+  if ((to.meta.notAuth) && (store.getters.getUserAuth)) {
+    router.push('/')
+  }
+
+  next()
 })
 
 new Vue({

@@ -1,9 +1,9 @@
 <template>
   <form class="form" @submit.prevent>
     <div class="form__header">
-      <a href="/">
+      <router-link to="/">
         <img src="@/assets/logo.svg" alt="" class="logo">
-      </a>
+      </router-link>
       <h2>Новая учетная запись</h2>
     </div>
     <div class="form__content">
@@ -36,7 +36,7 @@
       <div class="form__notification">{{ formError }}</div>
     </div>
     <div class="form__buttons">
-      <a href="/auth">У меня есть учетная запись</a>
+      <router-link to="/auth">У меня есть учетная запись</router-link>
       <button class="button button_primary" @click="reg">Подать заявку</button>
     </div>
   </form>
