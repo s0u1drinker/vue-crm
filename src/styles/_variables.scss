@@ -9,6 +9,7 @@ $gray_darken: #4d4d4d;
 $gray_shadow: #ccc;
 $primary: #55acee;
 $primary_light: lighten($primary, 12.5%);
+$primary_lighten: lighten($primary, 25%);
 $primary_dark: darken($primary, 25%);
 $success: #5EB82E;
 $warning: #DBD937;

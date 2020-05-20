@@ -34,7 +34,10 @@ export default {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   padding: 1rem;
+  position: sticky;
+  top: 0;
   flex: 1 0 auto;
   min-width: 23rem;
 }

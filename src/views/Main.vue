@@ -1,6 +1,6 @@
 <template>
   <main-layout>
-    <QuickAccessLinks />
+    <QuickAccessLinks offset="8" />
     <SearchForm />
     <MainEvents />
     <Adverts />

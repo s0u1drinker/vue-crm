@@ -19,3 +19,7 @@
 @mixin def-box-shadow-no-color {
   box-shadow: 0 .125rem .25rem;
 }
+
+@mixin def-border-gray {
+  border: 1px solid $gray;
+}

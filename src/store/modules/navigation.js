@@ -4,7 +4,7 @@ const state = {
       id: '1',
       moduleName: 'Main',
       title: 'Главная',
-      quickAccess: false,
+      quickAccess: true,
       icon: 'home'
     },
     {
