@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/phonebook',
     name: 'Phonebook',
-    component: () => import('../views/Phonebook.vue'),
+    component: () => import('../views/Phones.vue'),
     meta: {
       checkAuth: true
     }

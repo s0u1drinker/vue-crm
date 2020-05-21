@@ -58,5 +58,13 @@ table {
   display: flex;
 }
 
+.italic {
+  font-style: italic;
+}
+
+.gray {
+  color: $gray;
+}
+
 @import 'button';
 @import 'form';
