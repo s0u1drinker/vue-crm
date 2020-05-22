@@ -66,5 +66,22 @@ table {
   color: $gray;
 }
 
+.icon-chevron {
+  display: inline-block;
+  transform-origin: 50% 50%;
+
+  &_right {
+    transform: scale(-1, 1);
+  }
+
+  &_up {
+    transform: rotateZ(90deg);
+  }
+
+  &_down {
+    transform: rotateZ(-90deg);
+  }
+}
+
 @import 'button';
 @import 'form';

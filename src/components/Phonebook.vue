@@ -55,6 +55,9 @@
 </template>
 
 <script>
+// #TODO:
+// 1. Еще раз посмотреть на алгоритм фильтрации телефонов (проверка на отделение ДО перебора кабинетов);
+// 2. Событие вызывает метод, который вызывает мутацию. Может лучше избавиться от "прослойки" и пусть событие вызывает сразу мутацию?
 import PhonebookService from '@/services/PhonebookService'
 
 import { mapGetters, mapMutations } from 'vuex'

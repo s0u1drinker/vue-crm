@@ -1,5 +1,6 @@
 const state = {
-  events: [
+  events: {},
+  falseEvents: [
     {
       id: '1',
       timestamp: 1585200600,
@@ -88,11 +89,8 @@ const state = {
 }
 
 const getters = {
-  getEvents: state => {
-    return state.events
-  },
   getEventsToday: state => {
-    return state.events.filter(event => event.day === '26')
+    return state.falseEvents.filter(event => event.day === '26')
   }
 }
 

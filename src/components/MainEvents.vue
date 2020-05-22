@@ -19,11 +19,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'MainEvents',
-  data: function () {
-    return {
-      months: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
-    }
-  },
   computed: {
     ...mapGetters(['getEventsToday'])
   }
