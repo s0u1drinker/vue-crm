@@ -1,63 +1,98 @@
 <template>
   <div class="phonebook">
-    <div class="phonebook__search-panel">
-      <input
-        type="text"
-        class="phonebook__search"
-        placeholder="Номер телефона/кабинет/ФИО"
-        @keyup="setSearchText"
-        v-model="searchText"
-      >
-      <select
-        class="phonebook__select"
-        v-model="searchDepartment"
-        @change="setSearchDepartment"
-      >
-        <option value="-1">- Все отделения</option>
-        <option v-for="department in getPhonebook.data" :value="department._id" :key="department._id">{{department.name}}</option>
-      </select>
+    <div class="phonebook__placeholder" v-if="dataIsUpdated">
+      <i class="icon icon-update"></i>
+      <span>Ждем, пока сервер соизволит передать данные...</span>
     </div>
-    <div class="phonebook__table-wrapper">
-      <table class="phonebook__table">
-        <thead>
-          <tr>
-            <th>№ кабинета</th>
-            <th>Кабинет</th>
-            <th>Сотрудник(и)</th>
-            <th>Городской</th>
-            <th>Внутренний</th>
-          </tr>
-        </thead>
-        <tbody v-for="department in getPhonebook.data" :key="department._id" v-show="department.show">
-          <tr class="phonebook__table-body-header">
-            <td colspan="5">{{department.name}}</td>
-          </tr>
-          <tr v-for="cabinet in department.cabinets" :key="cabinet._id" v-show="cabinet.show">
-            <td>{{cabinet.cabinet_num}}</td>
-            <td>{{cabinet.cabinet_name}}</td>
-            <td v-html="cabinet.employees.join(',<br />')"></td>
-            <td>
-              <a :href="getOuterPhoneLink(cabinet.phone_outer)">{{cabinet.phone_outer}}</a>
-            </td>
-            <td>
-              <a :href="['tel:+78442415' + cabinet.phone_inner]">{{cabinet.phone_inner}}</a>
-            </td>
-          </tr>
-        </tbody>
-        <tbody v-if="getPhonebook.empty">
-          <tr class="phonebook__table-body-empty">
-            <td colspan="5">Ничего не найдено =(</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <template v-else>
+      <div class="phonebook__search-panel">
+        <div class="phonebook__search-wrapper">
+          <input
+            type="text"
+            class="phonebook__search"
+            placeholder="Номер телефона/кабинет/ФИО"
+            @keyup="setTextForSearch(searchText.toLowerCase())"
+            v-model="searchText"
+          >
+          <button
+            class="button"
+            v-show="this.searchText.length"
+          >
+            <i class="icon icon-clear" @click="clearSearchText"></i>
+          </button>
+        </div>
+        <select
+          class="phonebook__select"
+          v-model="searchDepartment"
+          @change="setDepartmentForSearch(searchDepartment)"
+        >
+          <option value="-1">- Все отделения</option>
+          <option v-for="department in getPhonebook.data" :value="department._id" :key="department._id">{{department.name}}</option>
+        </select>
+        <button
+          class="button button_inline"
+          @click="clearFilter"
+          v-show="searchText.length || searchDepartment !== '-1'"
+        >Сбросить фильтр</button>
+      </div>
+      <div class="phonebook__table-wrapper">
+        <table class="phonebook__table">
+          <thead>
+            <tr>
+              <th>№ кабинета</th>
+              <th>Кабинет</th>
+              <th>Сотрудник(и)</th>
+              <th>Городской</th>
+              <th>Внутренний</th>
+            </tr>
+          </thead>
+          <tbody
+            v-for="department in getPhonebook.data"
+            :key="department._id"
+            v-show="department.show"
+          >
+            <tr class="phonebook__table-body-header">
+              <td colspan="5">{{department.name}}</td>
+            </tr>
+            <tr
+              v-for="cabinet in department.cabinets"
+              :key="cabinet._id"
+              v-show="cabinet.show"
+            >
+              <td>{{cabinet.cabinet_num}}</td>
+              <td>{{cabinet.cabinet_name}}</td>
+              <td v-html="cabinet.employees.join(',<br />')"></td>
+              <td>
+                <a :href="getOuterPhoneLink(cabinet.phone_outer)">{{cabinet.phone_outer}}</a>
+              </td>
+              <td>
+                <template v-if="typeof cabinet.phone_inner !== 'string'">
+                  <div class="flexbox flexbox_column flexbox_align_center">
+                    <a
+                      :href="['tel:+78442415' + phone]"
+                      v-for="(phone, index) in cabinet.phone_inner"
+                      :key="index"
+                    >{{phone}}</a>
+                  </div>
+                </template>
+                <template v-else>
+                  <a :href="['tel:+78442415' + cabinet.phone_inner]">{{cabinet.phone_inner}}</a>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-if="getPhonebook.empty">
+            <tr class="phonebook__table-body-empty">
+              <td colspan="5">Ничего не найдено =(</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-// #TODO:
-// 1. Еще раз посмотреть на алгоритм фильтрации телефонов (проверка на отделение ДО перебора кабинетов);
-// 2. Событие вызывает метод, который вызывает мутацию. Может лучше избавиться от "прослойки" и пусть событие вызывает сразу мутацию?
 import PhonebookService from '@/services/PhonebookService'
 
 import { mapGetters, mapMutations } from 'vuex'
@@ -66,6 +101,7 @@ export default {
   name: 'Phonebook',
   data: () => {
     return {
+      dataIsUpdated: true,
       searchText: '',
       searchDepartment: '-1'
     }
@@ -74,13 +110,8 @@ export default {
     ...mapGetters(['getPhonebook'])
   },
   methods: {
-    ...mapMutations(['setPhonebook', 'setTextForSearch', 'setDepartmentForSearch']),
-    setSearchText: function () {
-      this.setTextForSearch(this.searchText.toLowerCase())
-    },
-    setSearchDepartment: function () {
-      this.setDepartmentForSearch(this.searchDepartment)
-    },
+    ...mapMutations(['setPhonebook', 'setTextForSearch', 'setDepartmentForSearch', 'resetFilterPhonebook']),
+    // В зависимости от типа (мобильный или городской) возвращает корректный номер телефона для ссылки.
     getOuterPhoneLink: function (phone) {
       let phoneLink
 
@@ -93,6 +124,17 @@ export default {
       }
 
       return phoneLink
+    },
+    // Очищает поле поиска
+    clearSearchText: function () {
+      this.searchText = ''
+      this.setTextForSearch('')
+    },
+    // Очищает данные фильтра
+    clearFilter: function () {
+      this.searchText = ''
+      this.searchDepartment = '-1'
+      this.resetFilterPhonebook()
     }
   },
   created: async function () {
@@ -107,6 +149,7 @@ export default {
       })
 
       this.setPhonebook(response)
+      this.dataIsUpdated = false
     }
   }
 }
@@ -125,33 +168,98 @@ export default {
     }
   }
 
+  &__placeholder {
+    align-items: center;
+    color: $gray;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+
+    .icon {
+      font-size: 3rem;
+      animation: loop 1.5s infinite ease;
+    }
+
+    span {
+      font-style: italic;
+      margin: 2rem;
+    }
+  }
+
   &__search {
+    $focusColor: $gray_dark;
     @include def-border-gray;
     @include def-box-shadow;
     @include transition((color, border-color));
-    width: 50%;
+    padding-right: 4.75rem;
+    width: 100%;
 
-    &:hover,
     &:focus {
-      border-color: $primary;
+      border-color: $focusColor;
+
+      & ~ button {
+        border-color: $focusColor;
+      }
+    }
+
+    &-wrapper {
+      display: flex;
+      position: relative;
+      width: 40%;
+
+      &:hover {
+        .phonebook__search {
+          border-color: $focusColor;
+        }
+
+        button {
+          border-color: $focusColor;
+        }
+      }
+
+      button {
+        $shift: 1px;
+        @include transition((background-color, border-color));
+        border-left: 1px solid $gray;
+        border-radius: 0 $border-radius $border-radius 0;
+        bottom: $shift;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        position: absolute;
+        right: $shift;
+        top: $shift;
+
+        &:hover {
+          background-color: $gray_light;
+        }
+      }
     }
   }
 
   &__search-panel {
+    align-items: center;
     display: flex;
-    justify-content: space-between;
+
+    & > button {
+      margin-left: auto;
+
+      &:hover {
+        color: $cardio;
+      }
+    }
   }
 
   &__select {
     @include def-border-gray;
     @include def-box-shadow;
+    margin-left: 4%;
     width: 40%;
   }
 
   &__table-wrapper {
     @include def-border-gray;
     @include def-box-shadow;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
   &__table {
@@ -191,15 +299,15 @@ export default {
 
     td {
       text-align: center;
+
+      &:nth-child(2),
+      &:nth-child(3) {
+        text-align: left;
+      }
     }
 
     tr {
       @include transition((background-color, color));
-    }
-
-    td:nth-child(2),
-    td:nth-child(3) {
-      text-align: left;
     }
 
     tbody {

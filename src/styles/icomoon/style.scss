@@ -3,9 +3,9 @@
 @font-face {
   font-family: '#{$icomoon-font-family}';
   src:
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?k8h8mt') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?k8h8mt') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?k8h8mt##{$icomoon-font-family}') format('svg');
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?7xvbnt') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?7xvbnt') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?7xvbnt##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,11 +26,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-chevron {
-  &:before {
-    content: $icon-chevron; 
-  }
-}
 .icon-conference {
   &:before {
     content: $icon-conference; 
@@ -121,9 +116,29 @@
     content: $icon-search; 
   }
 }
+.icon-clear {
+  &:before {
+    content: $icon-clear; 
+  }
+}
+.icon-close {
+  &:before {
+    content: $icon-close; 
+  }
+}
+.icon-chevron {
+  &:before {
+    content: $icon-chevron; 
+  }
+}
 .icon-conversation {
   &:before {
     content: $icon-conversation; 
+  }
+}
+.icon-update {
+  &:before {
+    content: $icon-update; 
   }
 }
 

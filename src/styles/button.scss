@@ -65,6 +65,11 @@ a.button {
       }
     }
   }
+
+  &_inline {
+    display: inline-block;
+    padding: 0;
+  }
 }
 
 .button-icon {

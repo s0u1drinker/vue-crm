@@ -56,6 +56,17 @@ table {
 
 .flexbox {
   display: flex;
+
+  &_column {
+    flex-direction: column;
+  }
+
+  &_align {
+
+    &_center {
+      align-items: center;
+    }
+  }
 }
 
 .italic {
