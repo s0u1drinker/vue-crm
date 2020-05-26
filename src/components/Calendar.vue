@@ -1,27 +1,18 @@
 <template>
   <div class="calendar">
     <div class="calendar__header">
-      <div class="calendar__header-day">{{ selectedDate.getDate() }}</div>
-      <div class="calendar__header-day-info">
-        <span class="calendar__header-weekday">{{ days[selectedDate.getDay()] }}</span>
-        <span class="calendar__header-month">{{ monthsDeclension[selectedDate.getMonth()] }} {{ selectedDate.getFullYear() }}</span>
-      </div>
+      <span class="calendar__header-weekday" :class="[selectedDate.getDay() > 5 ? 'color_cardio' : 'color_gray']">{{ days[selectedDate.getDay()] }}</span>
+      <span class="calendar__header-day">{{ `${selectedDate.getDate()} ${monthsDeclension[selectedDate.getMonth()].toLowerCase()} ${selectedDate.getFullYear()}` }}</span>
     </div>
     <div class="calendar__selector">
-      <button
-        class="button"
-        @click="toggleMonth(-1)"
-      ><i class="icon icon-chevron"></i></button>
-      <button class="button">{{ selectedDate.getFullYear() }}</button>
-      <button class="button">{{ months[selectedDate.getMonth()] }}</button>
-      <button
-        class="button"
-        @click="toggleMonth(1)"
-      ><i class="icon icon-chevron icon-chevron_right"></i></button>
+      <button class="button calendar__selector-month" @click="toggleMonth(-1)"><i class="icon icon-chevron"></i></button>
+      <button class="button calendar__selector-day">{{ months[showDate.getMonth()] }}</button>
+      <button class="button calendar__selector-day">{{ showDate.getFullYear() }}</button>
+      <button class="button calendar__selector-month" @click="toggleMonth(1)"><i class="icon icon-chevron icon-chevron_right"></i></button>
     </div>
     <div class="calendar__weekdays">
       <div
-        class="calendar__day"
+        class="calendar__weekday"
         :class="[(index > 4) ? 'calendar__day_weekend' : '']"
         v-for="(day, index) in daysAttr"
         :key="index"
@@ -30,15 +21,18 @@
     <div class="calendar__days">
       <div
         class="calendar__day"
-        :class="[(index > 4) ? 'calendar__day_weekend' : '']"
+        :class="getDayClasses(day)"
         v-for="(day, index) in daysInMonthWithNeighbors"
+        @click="selectThisDay(day)"
         :key="index"
-      >{{day}}</div>
+      >{{ day.getDate() }}</div>
     </div>
   </div>
 </template>
 
 <script>
+// TODO:
+// 1. Навесить обработчики на кнопки выбора месяца и года.
 export default {
   name: 'Calendar',
   data: () => {
@@ -47,18 +41,23 @@ export default {
       daysAttr: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
       months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       monthsDeclension: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
-      selectedDate: new Date()
+      selectedDate: new Date(),
+      showDate: new Date(),
+      today: new Date()
     }
   },
   computed: {
+    // Формирует массив с днями месяца, включая соседние
     daysInMonthWithNeighbors: function () {
       const daysArray = []
-      const dayOfPreviousMonth = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() - 1, 1)
-      const currentMonthDays = this.numberOfDaysInMonth(this.selectedDate)
+      const previousMonth = this.showDate.getMonth() - 1
+      const dayOfPreviousMonth = new Date(this.showDate.getFullYear(), previousMonth, 1)
       const previousMonthDays = this.numberOfDaysInMonth(dayOfPreviousMonth)
+      const currentMonthDays = this.numberOfDaysInMonth(this.showDate)
+      const endDay = new Date(this.showDate.getFullYear(), this.showDate.getMonth(), currentMonthDays).getDay()
+      const nextMonth = this.showDate.getMonth() + 1
 
-      let startDay = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), 1).getDay()
-      const endDay = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), currentMonthDays).getDay()
+      let startDay = new Date(this.showDate.getFullYear(), this.showDate.getMonth(), 1).getDay()
       let i
 
       if (startDay === 0) {
@@ -69,21 +68,24 @@ export default {
         startDay--
       }
 
+      // Заполняем дни предыдущего месяца
       for (i = 0; i < startDay; i++) {
-        daysArray.unshift(previousMonthDays - i)
+        daysArray.unshift(new Date(this.showDate.getFullYear(), previousMonth, previousMonthDays - i))
       }
 
+      // Заполняем дни текущего месяца
       for (i = 1; i <= currentMonthDays; i++) {
-        daysArray.push(i)
+        daysArray.push(new Date(this.showDate.getFullYear(), this.showDate.getMonth(), i))
       }
 
+      // Заполняем дни следующего месяца
       for (i = 1; i <= (7 - endDay); i++) {
-        daysArray.push(i)
+        daysArray.push(new Date(this.showDate.getFullYear(), nextMonth, i))
       }
 
       if (daysArray.length < 42) {
         for (let j = 0; j < 7; j++) {
-          daysArray.push(i + j)
+          daysArray.push(new Date(this.showDate.getFullYear(), nextMonth, i + j))
         }
       }
 
@@ -91,16 +93,156 @@ export default {
     }
   },
   methods: {
+    // Возвращает количество дней в месяце
     numberOfDaysInMonth: function (date) {
       return 33 - new Date(date.getFullYear(), date.getMonth(), 33).getDate()
     },
+    // "Переключает" месяц в календаре
     toggleMonth: function (direction) {
-      this.selectedDate = new Date(this.selectedDate.setMonth(this.selectedDate.getMonth() + direction, 1))
+      this.showDate = new Date(this.showDate.getFullYear(), this.showDate.getMonth() + direction, 1)
+    },
+    // Возвращает актуальные классы для текущей даты
+    getDayClasses: function (day) {
+      const classes = []
+
+      if (this.selectedDate.toDateString() === day.toDateString()) {
+        classes.push('calendar__day_selected')
+      } else {
+        if (this.showDate.getMonth() !== day.getMonth()) {
+          classes.push('calendar__day_neighbor')
+        } else {
+          const weekDay = day.getDay()
+
+          if (!weekDay || weekDay === 6) { classes.push('calendar__day_weekend') }
+        }
+
+        if (this.today.toDateString() === day.toDateString()) { classes.push('calendar__day_today') }
+      }
+
+      return classes
+    },
+    // Выбирает день
+    selectThisDay: function (day) {
+      if (day.getMonth() !== this.showDate.getMonth()) {
+        this.showDate = day
+      }
+
+      this.selectedDate = day
+      this.$emit('selectdate', day)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.calendar {}
+.calendar {
+  $padding: 1rem;
+  @include def-border-gray;
+  @include def-border-radius;
+  @include def-box-shadow;
+  width: calc(40px * 7 + 32px);
+
+  &__header {
+    align-items: center;
+    border-bottom: 1px solid $gray;
+    display: flex;
+    flex-direction: column;
+    padding: $padding;
+
+    &-weekday {
+      font-style: italic;
+    }
+
+    &-day {
+      font-size: 1.25rem;
+      margin-top: .25rem;
+    }
+  }
+
+  &__selector {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: $padding;
+
+    button {
+
+      &:hover {
+        background-color: $primary_lighten;
+      }
+    }
+
+    &-month {
+      @include flex-content-center;
+      border-radius: 50%;
+      height: 2.25rem;
+      padding: 0;
+      width: 2.25rem;
+    }
+
+    &-day {
+      background-color: $gray_light;
+      padding: .5rem $padding;
+    }
+  }
+
+  &__weekdays,
+  &__days{
+    display: flex;
+  }
+
+  &__weekdays {
+    border-bottom: 1px solid $gray_light;
+    border-top: 1px solid $gray_light;
+    padding: 0 $padding;
+    cursor: default;
+  }
+
+  &__weekday,
+  &__day {
+    $size: 2.5rem;
+    @include flex-content-center;
+    height: $size;
+    width: $size;
+  }
+
+  &__days {
+    flex-wrap: wrap;
+    padding: $padding;
+  }
+
+  &__day {
+    @include def-border-radius;
+    background-color: transparent;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+
+    &:hover {
+      border-color: $cardio;
+      cursor: pointer;
+    }
+
+    &_neighbor {
+      color: $gray;
+    }
+
+    &_weekend {
+      color: $cardio;
+    }
+
+    &_today {
+      background-color: $primary_lighten;
+    }
+
+    &_selected {
+      background-color: $cardio;
+      color: $white;
+      cursor: default;
+
+      &:hover {
+        pointer-events: none;
+      }
+    }
+  }
+}
 </style>

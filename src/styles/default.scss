@@ -73,8 +73,15 @@ table {
   font-style: italic;
 }
 
-.gray {
-  color: $gray;
+.color {
+
+  &_cardio {
+    color: $cardio;
+  }
+
+  &_gray {
+    color: $gray;
+  }
 }
 
 .icon-chevron {

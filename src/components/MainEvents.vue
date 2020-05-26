@@ -1,11 +1,11 @@
 <template>
   <div class="m-events">
     <ul class="m-events__list">
-      <li class="m-events__item" :class="['m-events__item_' + event.type]" v-for="event in getEventsToday" :key="event.id" :data-time="event.timestamp">
-        <div class="m-events__time">{{ event.timeStart }}</div>
+      <li class="m-events__item" :class="['m-events__item_' + event.type]" v-for="event in getEvents" :key="event.id">
+        <div class="m-events__time">{{ getPrettyTime(event.eventDate) }}</div>
         <div class="m-events__event">
           <span class="m-events__title">{{ event.title }}</span>
-          <span class="m-events__descr" v-if="event.descr">{{ event.descr }}</span>
+          <span class="m-events__descr" v-if="event.description">{{ event.description }}</span>
           <span class="m-events__place" v-if="event.place">{{ event.place }}</span>
         </div>
         <i class="icon" :class="['icon-' + event.icon]"></i>
@@ -15,12 +15,37 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// TODO:
+// 1. Placeholder на события.
+import { mapGetters, mapMutations } from 'vuex'
+
+import EventService from '@/services/EventService'
 
 export default {
   name: 'MainEvents',
   computed: {
-    ...mapGetters(['getEventsToday'])
+    ...mapGetters(['getEvents'])
+  },
+  methods: {
+    ...mapMutations(['setEvents']),
+    // Возвращает время в красивом формате
+    getPrettyTime: function (date) {
+      const currentDate = new Date(date)
+      let hours = currentDate.getHours()
+      let minutes = currentDate.getMinutes()
+
+      hours = (hours < 10) ? `0${hours}` : hours
+      minutes = (minutes < 10) ? `0${minutes}` : minutes
+
+      return `${hours}:${minutes}`
+    }
+  },
+  created: async function () {
+    const response = await EventService.getEventsForDay({
+      eventDate: new Date()
+    })
+
+    this.setEvents(response.data)
   }
 }
 </script>
