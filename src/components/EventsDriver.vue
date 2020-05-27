@@ -1,51 +1,48 @@
 <template>
-  <div class="events">
-    <div class="events__list">
-      {{getEvents}}
+  <div class="events-wrapper">
+    <div class="events-wrapper__box">
+      <Events :eventDate="dateForEvents" />
     </div>
-    <Calendar v-on:selectdate="getEventListToDate" />
+    <Calendar v-on:selectdate="setDateForEvents" />
   </div>
 </template>
 
 <script>
-// TOOD:
-// 1. Placeholder для списка событий;
-// 2. Заглушка на случай, если событий нет.
-import { mapGetters, mapMutations } from 'vuex'
-
-import EventService from '@/services/EventService'
-
 import Calendar from '@/components/Calendar'
+import Events from '@/components/Events'
 
 export default {
   name: 'EventsDriver',
-  data: function () {
+  data: () => {
     return {
-      listOfEvents: []
+      dateForEvents: new Date()
     }
   },
-  computed: {
-    ...mapGetters(['getEvents'])
-  },
   components: {
-    Calendar
+    Calendar,
+    Events
   },
   methods: {
-    ...mapMutations(['setEvents']),
-    // Обновляет данные списка событий в соответствии с выбранной датой
-    getEventListToDate: async function (eventDate) {
-      const listOfEvents = (await EventService.getEventsForDay({ eventDate })).data
-
-      this.setEvents(listOfEvents)
+    setDateForEvents: function (date) {
+      this.dateForEvents = date
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.events {
+.events-wrapper {
+  align-items: flex-start;
   display: flex;
   justify-content: space-between;
   margin-top: 3rem;
+
+  &__box {
+    width: 100%;
+  }
+
+  .calendar {
+    margin-left: 3rem;
+  }
 }
 </style>

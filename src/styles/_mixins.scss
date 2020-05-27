@@ -29,3 +29,8 @@
   display: flex;
   justify-content: center;
 }
+
+@mixin vertical-centering {
+  top: 50%;
+  transform: translateY(-50%);
+}

@@ -1,9 +1,6 @@
 <template>
   <div class="phonebook">
-    <div class="phonebook__placeholder" v-if="dataIsUpdated">
-      <i class="icon icon-update"></i>
-      <span>Ждем, пока сервер соизволит передать данные...</span>
-    </div>
+    <Placeholder text="Формируем телефонный справочник..." v-if="dataIsUpdated" />
     <template v-else>
       <div class="phonebook__search-panel">
         <div class="phonebook__search-wrapper">
@@ -93,10 +90,10 @@
 </template>
 
 <script>
-import PhonebookService from '@/services/PhonebookService'
-
 import { mapGetters, mapMutations } from 'vuex'
 
+import PhonebookService from '@/services/PhonebookService'
+import Placeholder from '@/components/Placeholder'
 export default {
   name: 'Phonebook',
   data: () => {
@@ -105,6 +102,9 @@ export default {
       searchText: '',
       searchDepartment: '-1'
     }
+  },
+  components: {
+    Placeholder
   },
   computed: {
     ...mapGetters(['getPhonebook'])
@@ -165,24 +165,6 @@ export default {
 
     &:hover {
       color: $cardio;
-    }
-  }
-
-  &__placeholder {
-    align-items: center;
-    color: $gray;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 0;
-
-    .icon {
-      font-size: 3rem;
-      animation: loop 1.5s infinite ease;
-    }
-
-    span {
-      font-style: italic;
-      margin: 2rem;
     }
   }
 

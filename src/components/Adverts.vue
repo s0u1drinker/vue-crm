@@ -5,8 +5,11 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
+import AdvertService from '@/services/AdvertService'
+
 import Advert from '@/components/Advert'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'Adverts',
@@ -14,7 +17,13 @@ export default {
     Advert
   },
   computed: {
-    ...mapGetters(['getEvents', 'getAdverts'])
+    ...mapGetters(['getAdverts'])
+  },
+  methods: {
+    ...mapMutations(['setAdverts'])
+  },
+  created: async function () {
+    this.setAdverts((await AdvertService.getAdverts()).data)
   }
 }
 </script>
