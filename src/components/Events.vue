@@ -5,12 +5,16 @@
       :class="eventsClass"
       v-else-if="!dataIsUpdated && Object.keys(getEvents).length"
     >
+      <h2
+        v-if="showOnMainPage"
+        :class="`${eventsClass}__header`"
+      >Мероприятия сегодня:</h2>
       <div
         :class="`${eventsClass}__item`"
         v-for="event in getEvents"
         :key="event._id"
       >
-        <Event :event="event" />
+        <Event :event="event" :showDuration="showOnMainPage" />
       </div>
     </div>
     <EmptyData v-else/>
@@ -95,16 +99,19 @@ export default {
 }
 
 .main-events {
-  $border_color: $gray;
-  @include def-border-radius;
-  @include def-box-shadow;
-  border: 1px solid $border_color;
   margin-top: 4rem;
   overflow: hidden;
 
+  &__header {
+    margin-bottom: 2rem;
+  }
+
   &__item {
+    @include def-border-radius;
+    @include def-border-gray;
+
     & + & {
-      border-top: 1px solid $border_color;
+      margin-top: 1rem;
     }
   }
 }

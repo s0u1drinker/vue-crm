@@ -1,7 +1,7 @@
 <template>
   <div
     class="event"
-    :class="[ event.type ? `event_${event.type}` : '' ]"
+    :class="[ event.type ? `event_${event.type}` : '', {'event_end' : endFlag} ]"
   >
     <span class="event__time">{{ getPrettyTime(event.eventDate) }}</span>
     <h3 class="event__title">{{ event.title }}</h3>
@@ -12,16 +12,24 @@
       class="icon"
       :class="[ event.icon ? `icon-${event.icon}` : '' ]"
     ></i>
+    <div
+      class="event__duration-show"
+      :style="{width: `${durationWidth}%`}"
+    ></div>
   </div>
 </template>
 
 <script>
-// TODO:
-// 1. Индикация продолжительности события;
-// 2. Новый дизайн для событий на главной.
 export default {
   name: 'Event',
-  props: ['event'],
+  props: ['event', 'showDuration'],
+  data: () => {
+    return {
+      durationWidth: 0,
+      endFlag: false,
+      timerId: false
+    }
+  },
   methods: {
     // Возвращает время в красивом формате
     getPrettyTime: function (date) {
@@ -36,8 +44,57 @@ export default {
     },
     // Возвращает продолжительность в красивом виде
     getPrettyDuration: function (minutes) {
-      return minutes
+      let result
+
+      if (minutes < 60) {
+        result = `${minutes} мин.`
+      } else {
+        const hours = (minutes - minutes % 60) / 60
+        const minutesLeft = minutes - hours * 60
+
+        result = (minutesLeft) ? `${hours} ч. ${minutesLeft} мин.` : `${hours} ч.`
+      }
+
+      return result
+    },
+    // Флаг окончания события
+    isEventEnd: function () {
+      return this.minutesPassed() >= this.event.duration
+    },
+    // Возвращает разницу минут между текущим временем и временем начала события
+    minutesPassed: function () {
+      return parseInt((new Date() - new Date(this.event.eventDate)) / 1000 / 60)
+    },
+    // Возвращает ширину элемента-индикатора продолжительности события
+    durationShowWidth: function () {
+      const minutesPassed = this.minutesPassed()
+      let width = 0
+
+      if (minutesPassed > 0) {
+        width = ((this.event.duration - minutesPassed) < 0) ? 100 : (minutesPassed * 100 / this.event.duration)
+      }
+
+      return width
     }
+  },
+  mounted: function () {
+    if (this.showDuration) {
+      this.endFlag = this.isEventEnd()
+      this.durationWidth = this.durationShowWidth()
+
+      if (!this.endFlag) {
+        this.timerId = setInterval(() => {
+          this.durationWidth = this.durationShowWidth()
+          if (this.isEventEnd()) {
+            this.endFlag = true
+            clearInterval(this.timerId)
+          }
+        }, 60000)
+      }
+    }
+  },
+  destroyed: function () {
+    clearInterval(this.timerId)
   }
 }
 </script>
@@ -47,6 +104,8 @@ export default {
   $color_high: $cardio;
   $color_med: $warning;
   $color_low: $success;
+  $lineWidth: 10px;
+  $degree: 135deg;
   border-left: .25rem solid;
   position: relative;
 
@@ -56,6 +115,12 @@ export default {
     .icon {
       color: $color_high;
     }
+
+    .event__duration-show {
+      $color1: lighten($color_high, 53%);
+      $color2: lighten($color_high, 56%);
+      background: repeating-linear-gradient($degree, $color1, $color1 $lineWidth, $color2 $lineWidth, $color2 $lineWidth*2);
+    }
   }
 
   &_med {
@@ -64,6 +129,12 @@ export default {
     .icon {
       color: $color_med;
     }
+
+    .event__duration-show {
+      $color1: lighten($color_med, 35%);
+      $color2: lighten($color_med, 40%);
+      background: repeating-linear-gradient($degree, $color1, $color1 $lineWidth, $color2 $lineWidth, $color2 $lineWidth*2);
+    }
   }
 
   &_low {
@@ -71,6 +142,12 @@ export default {
 
     .icon {
       color: $color_low;
+    }
+
+    .event__duration-show {
+      $color1: lighten($color_low, 45%);
+      $color2: lighten($color_low, 50%);
+      background: repeating-linear-gradient($degree, $color1, $color1 $lineWidth, $color2 $lineWidth, $color2 $lineWidth*2);
     }
   }
 
@@ -81,7 +158,7 @@ export default {
   }
 
   .main-events & {
-    padding: 1rem 4.5rem 1rem 7rem;
+    padding: 1rem 5.5rem 1rem 7rem;
 
     &:hover {
       .icon {
@@ -104,12 +181,47 @@ export default {
       margin-top: .5rem;
     }
 
+    &__duration-show {
+      @include transition(width);
+      animation: linearGradientMoves 60s linear infinite;
+      background-size: 150% 150%;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      top: 0;
+      z-index: -1;
+    }
+
     .icon {
       @include transition(right);
       @include vertical-centering;
-      font-size: 2.5rem;
+      font-size: 3.5rem;
       position: absolute;
       right: -4.5rem;
+    }
+
+    &_end {
+      $endColor: $gray_dark;
+      border-left-color: $endColor;
+
+      .event {
+        &__duration-show {
+          $color1: lighten($gray, 20%);
+          $color2: lighten($gray, 25%);
+          background: repeating-linear-gradient($degree, $color1, $color1 $lineWidth, $color2 $lineWidth, $color2 $lineWidth*2);
+        }
+
+        &__time,
+        &__title,
+        &__descr {
+          color: $endColor;
+        }
+      }
+
+      .icon {
+        color: $endColor;
+        right: 1rem;
+      }
     }
   }
 
@@ -144,6 +256,10 @@ export default {
 
     &__place {
       margin-top: 1rem;
+    }
+
+    &__duration-show {
+      display: none;
     }
 
     .icon {
