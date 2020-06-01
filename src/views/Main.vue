@@ -2,6 +2,7 @@
   <main-layout>
     <QuickAccessLinks offset="8" />
     <SearchForm />
+    <MainDocuments />
     <Adverts />
     <Events :showOnMainPage="true" :eventDate="new Date()" />
   </main-layout>
@@ -14,6 +15,7 @@ import QuickAccessLinks from '@/components/QuickAccessLinks'
 import SearchForm from '@/components/SearchForm'
 import Events from '@/components/Events'
 import Adverts from '@/components/Adverts'
+import MainDocuments from '@/components/MainDocuments'
 
 export default {
   components: {
@@ -21,7 +23,8 @@ export default {
     QuickAccessLinks,
     SearchForm,
     Events,
-    Adverts
+    Adverts,
+    MainDocuments
   }
 }
 </script>
