@@ -17,7 +17,7 @@
         <Event :event="event" :showDuration="showOnMainPage" />
       </div>
     </div>
-    <EmptyData v-else/>
+    <EmptyData v-else-if="!showOnMainPage" />
   </fragment>
 </template>
 

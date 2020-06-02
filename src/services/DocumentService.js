@@ -1,7 +1,10 @@
 import api from './Api'
 
 export default {
-  getDocumentsForMainPage (body) {
+  getDocumentsForMainPage () {
     return api().get('documents/getDocumentsForMainPage')
+  },
+  updateViewsCountOfDocument (id) {
+    return api().post('documents/updateViewsCountOfDocument', { id })
   }
 }
