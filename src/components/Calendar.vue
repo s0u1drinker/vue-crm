@@ -5,10 +5,10 @@
       <span class="calendar__header-day">{{ `${selectedDate.getDate()} ${monthsDeclension[selectedDate.getMonth()].toLowerCase()} ${selectedDate.getFullYear()}` }}</span>
     </div>
     <div class="calendar__selector">
-      <button class="button calendar__selector-month" @click="toggleMonth(-1)"><i class="icon icon-chevron"></i></button>
-      <button class="button calendar__selector-day">{{ months[showDate.getMonth()] }}</button>
-      <button class="button calendar__selector-day">{{ showDate.getFullYear() }}</button>
-      <button class="button calendar__selector-month" @click="toggleMonth(1)"><i class="icon icon-chevron icon-chevron_right"></i></button>
+      <button class="button calendar__selector-arrow" @click="toggleMonth(-1)"><i class="icon icon-chevron"></i></button>
+      <button class="button calendar__selector-date" @click="showPanel = !showPanel">{{ months[showDate.getMonth()] }}</button>
+      <button class="button calendar__selector-date" @click="showPanel = !showPanel">{{ showDate.getFullYear() }}</button>
+      <button class="button calendar__selector-arrow" @click="toggleMonth(1)"><i class="icon icon-chevron icon-chevron_right"></i></button>
     </div>
     <div class="calendar__weekdays">
       <div
@@ -27,12 +27,30 @@
         :key="index"
       >{{ day.getDate() }}</div>
     </div>
+    <div class="calendar__footer">
+      <button class="button calendar__selector-date" @click="selectThisDay(today)">Сегодня</button>
+    </div>
+    <div
+      class="calendar__panel"
+      v-show="showPanel"
+    >
+      <div class="calendar__selector">
+        <button class="button calendar__selector-arrow" @click="toggleYear(-1)"><i class="icon icon-chevron"></i></button>
+        <span>{{ newYear }}</span>
+        <button class="button calendar__selector-arrow" @click="toggleYear(1)"><i class="icon icon-chevron icon-chevron_right"></i></button>
+      </div>
+      <div
+        class="calendar__panel-item"
+        :class="{ 'calendar__panel-item_current': checkCurrentMonth(index), 'calendar__panel-item_today': checkTodayMonth(index) }"
+        v-for="(month, index) in months"
+        :key="index"
+        @click="setNewDate(index)"
+      >{{ month }}</div>
+    </div>
   </div>
 </template>
 
 <script>
-// TODO:
-// 1. Навесить обработчики на кнопки выбора месяца и года.
 export default {
   name: 'Calendar',
   data: () => {
@@ -43,7 +61,16 @@ export default {
       monthsDeclension: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
       selectedDate: new Date(),
       showDate: new Date(),
-      today: new Date()
+      today: new Date(),
+      showPanel: false,
+      newYear: ''
+    }
+  },
+  watch: {
+    showPanel: function () {
+      if (this.showPanel) {
+        this.newYear = this.showDate.getFullYear()
+      }
     }
   },
   computed: {
@@ -107,17 +134,17 @@ export default {
 
       if (this.selectedDate.toDateString() === day.toDateString()) {
         classes.push('calendar__day_selected')
-      } else {
-        if (this.showDate.getMonth() !== day.getMonth()) {
-          classes.push('calendar__day_neighbor')
-        } else {
-          const weekDay = day.getDay()
-
-          if (!weekDay || weekDay === 6) { classes.push('calendar__day_weekend') }
-        }
-
-        if (this.today.toDateString() === day.toDateString()) { classes.push('calendar__day_today') }
       }
+
+      if (this.showDate.getMonth() !== day.getMonth()) {
+        classes.push('calendar__day_neighbor')
+      } else {
+        const weekDay = day.getDay()
+
+        if (!weekDay || weekDay === 6) { classes.push('calendar__day_weekend') }
+      }
+
+      if (this.today.toDateString() === day.toDateString()) { classes.push('calendar__day_today') }
 
       return classes
     },
@@ -129,6 +156,23 @@ export default {
 
       this.selectedDate = day
       this.$emit('selectdate', day)
+    },
+    // Устанавливает месяц
+    setNewDate: function (month) {
+      this.showDate = new Date(this.newYear, month, 1)
+      this.showPanel = false
+    },
+    // "Переключает" год в календаре
+    toggleYear: function (direction) {
+      this.newYear = (this.newYear ? this.newYear : this.showDate) + direction
+    },
+    // Флаг для выделения выбранного в календаре месяца
+    checkCurrentMonth: function (month) {
+      return ((month === this.showDate.getMonth()) && (this.newYear === this.showDate.getFullYear()))
+    },
+    // Флаг для выделения текущего месяца
+    checkTodayMonth: function (month) {
+      return ((month === this.today.getMonth()) && (this.newYear === this.today.getFullYear()))
     }
   }
 }
@@ -140,7 +184,14 @@ export default {
   @include def-border-gray;
   @include def-border-radius;
   @include def-box-shadow;
+  position: relative;
   width: calc(40px * 7 + 32px);
+
+  button {
+    &:hover {
+      background-color: $primary_lighten;
+    }
+  }
 
   &__header {
     align-items: center;
@@ -165,14 +216,7 @@ export default {
     justify-content: space-between;
     padding: $padding;
 
-    button {
-
-      &:hover {
-        background-color: $primary_lighten;
-      }
-    }
-
-    &-month {
+    &-arrow {
       @include flex-content-center;
       border-radius: 50%;
       height: 2.25rem;
@@ -180,7 +224,7 @@ export default {
       width: 2.25rem;
     }
 
-    &-day {
+    &-date {
       background-color: $gray_light;
       padding: .5rem $padding;
     }
@@ -242,6 +286,60 @@ export default {
       &:hover {
         pointer-events: none;
       }
+
+      &.calendar__day_neighbor {
+        background-color: $gray;
+      }
+    }
+  }
+
+  &__footer {
+    justify-content: center;
+    border-top: 1px solid $gray_light;
+    display: flex;
+    padding: $padding;
+  }
+
+  &__panel {
+    align-content: space-between;
+    background-color: $white;
+    border-radius: inherit;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    left: 0;
+    padding: $padding*2 $padding;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+
+    &-item {
+      @include transition(background-color);
+      border: 1px solid transparent;
+      border-radius: inherit;
+      box-sizing: border-box;
+      padding: .5rem 0;
+      text-align: center;
+      width: 40%;
+
+      &:hover {
+        background-color: $gray_light;
+        cursor: pointer;
+      }
+
+      &_current {
+        border-color: $cardio;
+      }
+
+      &_today {
+        background-color: $primary_lighten;
+      }
+    }
+
+    .calendar__selector {
+      width: 100%;
     }
   }
 }

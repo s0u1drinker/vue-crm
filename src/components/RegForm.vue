@@ -43,7 +43,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+
+import OrganizationService from '@/services/OrganizationService'
 
 export default {
   name: 'RegForm',
@@ -56,10 +58,15 @@ export default {
     ...mapGetters(['getPositions', 'getDepartments'])
   },
   methods: {
+    ...mapMutations(['setPositions', 'setDepartments']),
     reg: function () {
       this.formError = 'No vacancy!'
       alert('No vacancy!')
     }
+  },
+  created: async function () {
+    this.setPositions(await OrganizationService.getPositions())
+    this.setDepartments(await OrganizationService.getDepartments())
   }
 }
 </script>
