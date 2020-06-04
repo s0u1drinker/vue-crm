@@ -53,7 +53,7 @@ export default {
           this.userLogIn(response.data.username)
           this.$router.push('/')
         } else {
-          this.formError = 'Что-то пошло не так. Поторите запрос.'
+          this.formError = 'Что-то пошло не так. Повторите запрос.'
         }
       }
     },

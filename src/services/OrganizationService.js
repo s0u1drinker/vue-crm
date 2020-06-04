@@ -5,6 +5,6 @@ export default {
     return api().get('organization/getPositions')
   },
   getDepartments () {
-    return api().get('organization/getDepartments')
+    return api().get('organization/getDepartmentsForRegistration')
   }
 }

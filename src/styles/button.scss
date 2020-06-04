@@ -70,6 +70,11 @@ a.button {
     display: inline-block;
     padding: 0;
   }
+
+  &:disabled {
+    background-color: $gray;
+    cursor: not-allowed;
+  }
 }
 
 .button-icon {

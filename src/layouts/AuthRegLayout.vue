@@ -48,10 +48,11 @@ export default {
     background-image: url('../assets/img/bg/bg_reg.jpg');
 
     .form-wrapper {
-      left: 12.5%;
+      left: 0;
+      perspective: 100rem;
       top: 50%;
       transform: translateY(-50%);
-      width: 30rem;
+      width: 100%;
     }
   }
 
