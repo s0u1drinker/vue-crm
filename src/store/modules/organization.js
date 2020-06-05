@@ -1,6 +1,7 @@
 const state = {
   positions: [],
-  departments: []
+  departments: [],
+  regTasks: []
 }
 
 const getters = {
@@ -9,6 +10,9 @@ const getters = {
   },
   getDepartments: state => {
     return state.departments
+  },
+  getRegistrationTasks: state => {
+    return state.regTasks
   }
 }
 
@@ -18,6 +22,9 @@ const mutations = {
   },
   setDepartments: (state, departments) => {
     state.departments = departments
+  },
+  setRegistrationTasks: (state, tasks) => {
+    state.regTasks = tasks
   }
 }
 

@@ -6,5 +6,8 @@ export default {
   },
   getDepartments () {
     return api().get('organization/getDepartmentsForRegistration')
+  },
+  getRegistrationTasks () {
+    return api().get('organization/getRegistrationTasks')
   }
 }
