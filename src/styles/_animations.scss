@@ -18,3 +18,15 @@
     background-position: 100% 0;
   }
 }
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .25;
+  }
+  100% {
+    opacity: 1;
+  }
+}

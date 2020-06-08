@@ -1,7 +1,7 @@
 <template>
   <div
     class="form__flipper"
-    :class="{ 'form__flipper_st2': showTasks, 'form__flipper_st3': showInformation  }"
+    :class="{ 'form__flipper_st2': forms.tasks.show, 'form__flipper_st3': forms.information.show  }"
   >
     <div class="form form_data">
       <div class="form__header">
@@ -36,14 +36,13 @@
           </template>
           <label :for="field.id">{{field.label}}</label>
         </div>
-        <div class="form__notification">{{ formError }}</div>
+        <div class="form__notification">{{ forms.data.error }}</div>
       </div>
       <div class="form__buttons">
         <router-link to="/auth">У меня есть учетная запись</router-link>
         <button
           class="button button_primary"
           @click="showTasksForm"
-          :disabled="!allFieldsAreFilled"
         >Продолжить &raquo;</button>
       </div>
     </div>
@@ -72,22 +71,24 @@
             </label>
           </li>
           <li class="form__task">
-            <label class="form__task-label" @click="showTasksTextarea=!showTasksTextarea">
+            <label class="form__task-label">
               <input
                 type="checkbox"
                 value="other"
-                v-model="checkedTasks"
+                v-model="otherTasks.show"
               />
               <i class="icon icon-check"></i>
-              Иное:
-              <textarea
-                class="form__textarea"
-                placeholder="Опишите задачу"
-                v-show="showTasksTextarea"
-              ></textarea>
+              Иное
             </label>
+            <textarea
+              :class="{ 'no-text': (otherTasks.show && !otherTasks.text.length) }"
+              placeholder="Опишите задачу"
+              v-show="otherTasks.show"
+              v-model="otherTasks.text"
+            ></textarea>
           </li>
         </ul>
+        <div class="form__notification">{{ forms.tasks.error }}</div>
       </div>
       <div class="form__buttons">
         <button class="button button_primary" @click="showDataForm">&laquo; Назад</button>
@@ -97,20 +98,43 @@
     <div
       class="form form_information"
     >
-      Заявка принята. Файл формируется...
+      <div class="form__header">
+        <h2>Почти готово</h2>
+      </div>
+      <div class="form__content">
+        <p>Осталось дело за малым:</p>
+        <ol>
+          <li>Распечатать файл по ссылке ниже;</li>
+          <li>Подписать у зав. отеделнием;</li>
+          <li>Подписать на обороте;</li>
+          <li>Отдать заявку в каб. 2.093.</li>
+        </ol>
+      </div>
+      <div class="form__buttons form__buttons_center">
+        <Placeholder
+          text="Формируется файл"
+          typeButton
+          v-show="!fileLink"
+        />
+        <a
+          :href="fileLink"
+          class="button button_primary"
+          v-show="fileLink"
+        >Скачать файл-заявку</a>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 // TODO:
-// 1. Стилизация задач;
-// 2. Добавить текст информации;
-// 3. Отправка данных о регистрации на сервер;
-// 4. Формирование PDF-файла.
+// 1. Сохранение в логи информации о заявке;
+// 2. Формирование PDF-файла.
 import { mapGetters, mapMutations } from 'vuex'
 
 import OrganizationService from '@/services/OrganizationService'
+
+import Placeholder from '@/components/Placeholder'
 
 export default {
   name: 'RegForm',
@@ -150,12 +174,28 @@ export default {
           value: ''
         }
       ],
+      otherTasks: {
+        show: false,
+        text: ''
+      },
+      forms: {
+        data: {
+          error: ''
+        },
+        tasks: {
+          show: false,
+          error: ''
+        },
+        information: {
+          show: false
+        }
+      },
       checkedTasks: [],
-      showTasks: false,
-      showInformation: false,
-      showTasksTextarea: false,
-      formError: ''
+      fileLink: false
     }
+  },
+  components: {
+    Placeholder
   },
   computed: {
     ...mapGetters(['getPositions', 'getDepartments', 'getRegistrationTasks']),
@@ -164,25 +204,59 @@ export default {
       const filledFields = this.fields.filter((item) => { return item.value })
 
       return (Object.keys(filledFields).length === this.fields.length)
+    },
+    // Флаг заполненного поля "Иное"
+    otherTasksTextFilled: function () {
+      return this.otherTasks.text.length > 0
     }
   },
   methods: {
     ...mapMutations(['setPositions', 'setDepartments', 'setRegistrationTasks']),
     // Показывает форму с данными пользователя
     showDataForm: function () {
-      this.showTasks = false
+      this.forms.tasks.show = false
     },
     // Показывает форму с задачами
     showTasksForm: function () {
       if (this.allFieldsAreFilled) {
-        this.showTasks = true
-        this.showInformation = false
+        this.forms.data.error = ''
+        this.forms.tasks.show = true
+        this.forms.information.show = false
+      } else {
+        this.forms.data.error = 'Необходимо заполнить все поля!'
       }
     },
     // Показывает форму с информацией о сформированном файле
     showInformationForm: function () {
-      this.showTasks = false
-      this.showInformation = true
+      if (!this.otherTasks.show && !this.checkedTasks.length) {
+        this.forms.tasks.error = 'Выберите минимум одну задачу!'
+      } else if (this.otherTasks.show && !this.otherTasksTextFilled) {
+        this.forms.tasks.error = 'Необходимо указать иные задачи!'
+      } else {
+        this.forms.information.error = ''
+        this.forms.tasks.show = false
+        this.forms.information.show = true
+        this.sendRegistrationInfo()
+      }
+    },
+    // Отправляет информацию о регистрации пользователя
+    sendRegistrationInfo: async function () {
+      const info = {}
+      let response = {}
+
+      this.fields.forEach((field) => {
+        info[field.id] = field.value
+      })
+
+      info.tasks = this.checkedTasks
+
+      if (this.otherTasksTextFilled) {
+        info.otherTasks = this.otherTasks.text
+      }
+
+      response = await OrganizationService.addNewApplicationForRegistration(info)
+
+      this.fileLink = `files/${response.data}`
     }
   },
   mounted: async function () {
@@ -190,10 +264,10 @@ export default {
     const departments = await OrganizationService.getDepartments()
     const regTasks = await OrganizationService.getRegistrationTasks()
 
-    this.setPositions(positions.data)
-    this.fields[3].options = positions.data
     this.setDepartments(departments.data)
-    this.fields[4].options = departments.data
+    this.fields[3].options = departments.data
+    this.setPositions(positions.data)
+    this.fields[4].options = positions.data
     this.setRegistrationTasks(regTasks.data)
   }
 }
@@ -207,6 +281,23 @@ export default {
   position: absolute;
   right: 0;
   transform: translateY(-50%);
+
+  &_tasks {
+    transform: rotateY(-180deg) translateY(-50%);
+  }
+
+  &_information {
+    z-index: -1;
+
+    a {
+      color: $white;
+
+      &:hover,
+      &:visited {
+        color: $white;
+      }
+    }
+  }
 
   &__flipper {
     @include transition((transform, left));
@@ -232,16 +323,9 @@ export default {
     }
   }
 
-  &_tasks {
-    transform: rotateY(-180deg) translateY(-50%);
-  }
-
-  &_information {
-    z-index: -1;
-  }
-
   &__task {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
 
     & + & {
@@ -254,6 +338,22 @@ export default {
       &:checked ~ .icon {
         border-color: transparent;
         color: $cardio;
+      }
+    }
+
+    textarea {
+      @include def-border-gray;
+      @include def-border-radius;
+      @include transition(border-color);
+      margin: .25rem 0 0 2.5rem;
+      width: 100%;
+
+      &:focus {
+        border-color: $primary;
+      }
+
+      &.no-text {
+        border-color: $cardio;
       }
     }
 
@@ -278,6 +378,25 @@ export default {
         color: $white;
         margin-right: .75rem;
         padding: .25rem;
+      }
+    }
+  }
+
+  &__content {
+    ol {
+      margin-top: .75rem;
+
+      li {
+        @include transition(background-color);
+        padding: .5rem;
+
+        &::marker {
+          color: $primary;
+        }
+
+        &:hover {
+          background-color: $gray_light;
+        }
       }
     }
   }

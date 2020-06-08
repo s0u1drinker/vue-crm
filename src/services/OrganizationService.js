@@ -9,5 +9,8 @@ export default {
   },
   getRegistrationTasks () {
     return api().get('organization/getRegistrationTasks')
+  },
+  addNewApplicationForRegistration (info) {
+    return api().post('organization/addNewApplicationForRegistration', info)
   }
 }

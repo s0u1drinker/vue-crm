@@ -34,6 +34,22 @@ a.button {
     }
   }
 
+  &_cardio {
+    background-color: $cardio;
+    color: $white;
+
+    &:hover {
+      background-color: darken($cardio, 15%);
+    }
+
+    &.button-icon {
+
+      .icon {
+        background-color: darken($primary, 15%);
+      }
+    }
+  }
+
   &_gray {
     background-color: $gray;
     color: $white;

@@ -30,17 +30,29 @@ p {
 
 ul,
 ol {
-  list-style: none;
   margin: 0;
   padding: 0;
 }
 
+ul {
+  list-style: none;
+}
+
+ol {
+  list-style-position: inside;
+}
+
 input,
-select {
+select,
+textarea {
   @include def-border-radius;
   background-color: transparent;
   border: 0 none;
   box-sizing: border-box;
+
+  &:focus {
+    outline: 0 none;
+  }
 }
 
 input {
@@ -49,6 +61,11 @@ input {
 
 select {
   padding: .5rem 1rem;
+}
+
+textarea {
+  padding: .5rem;
+  resize: none;
 }
 
 table {
