@@ -104,7 +104,7 @@
       <div class="form__content">
         <p>Осталось дело за малым:</p>
         <ol>
-          <li>Распечатать файл по ссылке ниже;</li>
+          <li>Распечатать файл (на одном листе с двух сторон) по ссылке ниже;</li>
           <li>Подписать у зав. отеделнием;</li>
           <li>Подписать на обороте;</li>
           <li>Отдать заявку в каб. 2.093.</li>
@@ -128,8 +128,7 @@
 
 <script>
 // TODO:
-// 1. Сохранение в логи информации о заявке;
-// 2. Формирование PDF-файла.
+// 1. Формирование PDF-файла.
 import { mapGetters, mapMutations } from 'vuex'
 
 import OrganizationService from '@/services/OrganizationService'
@@ -249,10 +248,7 @@ export default {
       })
 
       info.tasks = this.checkedTasks
-
-      if (this.otherTasksTextFilled) {
-        info.otherTasks = this.otherTasks.text
-      }
+      info.otherTasks = (this.otherTasksTextFilled) ? this.otherTasks.text : ''
 
       response = await OrganizationService.addNewApplicationForRegistration(info)
 
