@@ -1,10 +1,14 @@
 const state = {
+  regData: [],
   positions: [],
   departments: [],
   regTasks: []
 }
 
 const getters = {
+  getRegData: state => {
+    return state.regData
+  },
   getPositions: state => {
     return state.positions
   },
@@ -17,6 +21,9 @@ const getters = {
 }
 
 const mutations = {
+  setRegData: (state, regData) => {
+    state.regData = regData
+  },
   setPositions: (state, positions) => {
     state.positions = positions
   },

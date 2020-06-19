@@ -12,5 +12,8 @@ export default {
   },
   addNewApplicationForRegistration (info) {
     return api().post('organization/addNewApplicationForRegistration', info)
+  },
+  getDataForRegistration () {
+    return api().get('organization/getDataForRegistration')
   }
 }

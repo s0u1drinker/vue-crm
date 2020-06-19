@@ -10,8 +10,14 @@ import phonebook from './modules/phonebook'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
-  getters: {},
+  state: {
+    monthsDeclension: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+  },
+  getters: {
+    getMonthsDeclension: state => {
+      return state.monthsDeclension
+    }
+  },
   mutations: {},
   actions: {},
 

@@ -13,28 +13,71 @@
       <div class="form__content">
         <div
           class="form__element"
-          :class="[field.value ? 'form__element_filled' : '']"
-          v-for="(field, index) in fields"
-          :key="index"
+          :class="[surname ? 'form__element_filled' : '']"
         >
-          <template v-if="(field.type === 'text')">
-            <input
-              type="text"
-              :id="field.id"
-              v-model="field.value"
-            />
-          </template>
-          <template v-else-if="field.type === 'select'">
-            <select
-              :name="field.id"
-              :id="field.id"
-              v-model="field.value"
-            >
-              <option value="-1"></option>
-              <option v-for="option in field.options" :value="option._id" :key="option.id">{{ option.name }}</option>
-            </select>
-          </template>
-          <label :for="field.id">{{field.label}}</label>
+          <input
+            type="text"
+            id="surname"
+            v-model="surname"
+          />
+          <label for="surname">Фамилия</label>
+        </div>
+        <div
+          class="form__element"
+          :class="[name ? 'form__element_filled' : '']"
+        >
+          <input
+            type="text"
+            id="name"
+            v-model="name"
+          />
+          <label for="name">Имя</label>
+        </div>
+        <div
+          class="form__element"
+          :class="[patronymic ? 'form__element_filled' : '']"
+        >
+          <input
+            type="text"
+            id="patronymic"
+            v-model="patronymic"
+          />
+          <label for="patronymic">Отчество</label>
+        </div>
+        <div
+          class="form__element"
+          :class="[department ? 'form__element_filled' : '']"
+        >
+          <select
+            id="department"
+            v-model="department"
+          >
+            <option value=""></option>
+            <option
+              v-for="(dep, index) in getRegData"
+              :value="dep._id.id"
+              :key="index"
+            >{{ dep._id.name }}</option>
+          </select>
+          <label for="department">Подразделение</label>
+        </div>
+        <div
+          class="form__element"
+          :class="[position ? 'form__element_filled' : '']"
+        >
+          <select
+            id="position"
+            v-model="position"
+            :disabled="!department"
+          >
+            <option value=""></option>
+            <option
+              v-for="(pos, index) in positions"
+              :value="pos._id"
+              :key="index"
+            >{{ pos.name }}</option>
+          </select>
+          <label for="position">Должность</label>
         </div>
         <div class="form__notification">{{ forms.data.error }}</div>
       </div>
@@ -57,7 +100,7 @@
         <ul class="form__tasks-list">
           <li
             class="form__task"
-            v-for="task in getRegistrationTasks"
+            v-for="task in tasks"
             :key="task._id"
           >
             <label class="form__task-label">
@@ -69,23 +112,6 @@
               <i class="icon icon-check"></i>
               {{ task.task }}
             </label>
-          </li>
-          <li class="form__task">
-            <label class="form__task-label">
-              <input
-                type="checkbox"
-                value="other"
-                v-model="otherTasks.show"
-              />
-              <i class="icon icon-check"></i>
-              Иное
-            </label>
-            <textarea
-              :class="{ 'no-text': (otherTasks.show && !otherTasks.text.length) }"
-              placeholder="Опишите задачу"
-              v-show="otherTasks.show"
-              v-model="otherTasks.text"
-            ></textarea>
           </li>
         </ul>
         <div class="form__notification">{{ forms.tasks.error }}</div>
@@ -104,23 +130,16 @@
       <div class="form__content">
         <p>Осталось дело за малым:</p>
         <ol>
-          <li>Распечатать файл (на одном листе с двух сторон) по ссылке ниже;</li>
-          <li>Подписать у зав. отеделнием;</li>
-          <li>Подписать на обороте;</li>
+          <li>Распечатать файл по ссылке ниже;</li>
+          <li>Подписать у руководителя;</li>
           <li>Отдать заявку в каб. 2.093.</li>
         </ol>
       </div>
       <div class="form__buttons form__buttons_center">
-        <Placeholder
-          text="Формируется файл"
-          typeButton
-          v-show="!fileLink"
-        />
-        <a
-          :href="fileLink"
+        <button
           class="button button_primary"
-          v-show="fileLink"
-        >Скачать файл-заявку</a>
+          @click.prevent="generatePDF"
+        >Скачать файл-заявку</button>
       </div>
     </div>
   </div>
@@ -128,55 +147,27 @@
 
 <script>
 // TODO:
-// 1. Формирование PDF-файла.
+// 1. Фильтрация должностей по выбранному подразделению;
+// 2. Фильтрация задач по должности.
 import { mapGetters, mapMutations } from 'vuex'
+import PDFmake from 'pdfmake/build/pdfmake'
+import PDFfonts from 'pdfmake/build/vfs_fonts'
 
 import OrganizationService from '@/services/OrganizationService'
 
-import Placeholder from '@/components/Placeholder'
+import BlankISPDN from '@/templates/Blank_ISPDN.js'
+
+PDFmake.vfs = PDFfonts.pdfMake.vfs
 
 export default {
   name: 'RegForm',
   data: () => {
     return {
-      fields: [
-        {
-          id: 'surname',
-          label: 'Фамилия',
-          type: 'text',
-          value: ''
-        },
-        {
-          id: 'name',
-          label: 'Имя',
-          type: 'text',
-          value: ''
-        },
-        {
-          id: 'patronymic',
-          label: 'Отчество',
-          type: 'text',
-          value: ''
-        },
-        {
-          id: 'department',
-          label: 'Подразделение',
-          type: 'select',
-          options: {},
-          value: ''
-        },
-        {
-          id: 'position',
-          label: 'Должность',
-          type: 'select',
-          options: {},
-          value: ''
-        }
-      ],
-      otherTasks: {
-        show: false,
-        text: ''
-      },
+      surname: '',
+      name: '',
+      patronymic: '',
+      department: '',
+      position: '',
       forms: {
         data: {
           error: ''
@@ -190,27 +181,19 @@ export default {
         }
       },
       checkedTasks: [],
-      fileLink: false
+      positions: [],
+      tasks: []
     }
   },
-  components: {
-    Placeholder
-  },
   computed: {
-    ...mapGetters(['getPositions', 'getDepartments', 'getRegistrationTasks']),
+    ...mapGetters(['getRegData', 'getMonthsDeclension']),
     // Флаг заполненности всех полей формы
     allFieldsAreFilled: function () {
-      const filledFields = this.fields.filter((item) => { return item.value })
-
-      return (Object.keys(filledFields).length === this.fields.length)
-    },
-    // Флаг заполненного поля "Иное"
-    otherTasksTextFilled: function () {
-      return this.otherTasks.text.length > 0
+      return (this.surname && this.name && this.patronymic && this.department && this.position)
     }
   },
   methods: {
-    ...mapMutations(['setPositions', 'setDepartments', 'setRegistrationTasks']),
+    ...mapMutations(['setRegData']),
     // Показывает форму с данными пользователя
     showDataForm: function () {
       this.forms.tasks.show = false
@@ -227,10 +210,8 @@ export default {
     },
     // Показывает форму с информацией о сформированном файле
     showInformationForm: function () {
-      if (!this.otherTasks.show && !this.checkedTasks.length) {
+      if (!this.checkedTasks.length) {
         this.forms.tasks.error = 'Выберите минимум одну задачу!'
-      } else if (this.otherTasks.show && !this.otherTasksTextFilled) {
-        this.forms.tasks.error = 'Необходимо указать иные задачи!'
       } else {
         this.forms.information.error = ''
         this.forms.tasks.show = false
@@ -240,31 +221,72 @@ export default {
     },
     // Отправляет информацию о регистрации пользователя
     sendRegistrationInfo: async function () {
-      const info = {}
-      let response = {}
+      await OrganizationService.addNewApplicationForRegistration({
+        surname: this.surname,
+        name: this.name,
+        patronymic: this.patronymic,
+        department: this.department,
+        position: this.position,
+        tasks: this.checkedTasks
+      })
+    },
+    // Возвращает картинку в base64
+    imageToBase64: function (url) {
+      return new Promise((resolve, reject) => {
+        var img = new Image()
+        img.setAttribute('crossOrigin', 'anonymous')
+        img.onload = () => {
+          var canvas = document.createElement('canvas')
+          canvas.width = img.width
+          canvas.height = img.height
+          var ctx = canvas.getContext('2d')
+          ctx.drawImage(img, 0, 0)
+          var dataURL = canvas.toDataURL('image/png')
+          resolve(dataURL)
+        }
+        img.onerror = error => {
+          reject(error)
+        }
+        img.src = url
+      })
+    },
+    // Возвращает слово с заглавной буквы
+    capitalLetter: function (text) {
+      return text[0].toUpperCase() + text.slice(1)
+    },
+    // Формирование PDF-документа
+    generatePDF: async function () {
+      const sign = await this.imageToBase64('img/blanks/sign.png')
+      const print = await this.imageToBase64('img/blanks/print.png')
+      const position = this.getPositions.filter(item => { return item._id === this.position })[0]
+      const department = this.getDepartments.filter(item => { return item._id === this.department })[0]
+      const tasks = this.getRegistrationTasks.filter(item => { return this.checkedTasks.includes(item._id) })
 
-      this.fields.forEach((field) => {
-        info[field.id] = field.value
+      BlankISPDN.setData({
+        user: `${this.capitalLetter(this.surname)} ${this.capitalLetter(this.name)} ${this.capitalLetter(this.patronymic)}`,
+        position: position.name,
+        department: department.abbr,
+        tasks,
+        headDepartment: {
+          name: (position._id === '5ee888b8d0a9df15a486a0d7') ? 'Дворецкая М.С.' : department.head.name,
+          position: (position._id === '5ee888b8d0a9df15a486a0d7') ? 'Зам. гл. врача по мед. части' : department.head.position
+        },
+        date: {
+          day: new Date().getDate(),
+          month: this.getMonthsDeclension[new Date().getMonth()].toLowerCase(),
+          year: new Date().getFullYear()
+        },
+        sign,
+        print
       })
 
-      info.tasks = this.checkedTasks
-      info.otherTasks = (this.otherTasksTextFilled) ? this.otherTasks.text : ''
-
-      response = await OrganizationService.addNewApplicationForRegistration(info)
-
-      this.fileLink = `files/${response.data}`
+      PDFmake.createPdf(BlankISPDN.getData()).download('output.pdf')
     }
   },
   mounted: async function () {
-    const positions = await OrganizationService.getPositions()
-    const departments = await OrganizationService.getDepartments()
-    const regTasks = await OrganizationService.getRegistrationTasks()
+    const regData = await OrganizationService.getDataForRegistration()
 
-    this.setDepartments(departments.data)
-    this.fields[3].options = departments.data
-    this.setPositions(positions.data)
-    this.fields[4].options = positions.data
-    this.setRegistrationTasks(regTasks.data)
+    this.setRegData(regData.data)
   }
 }
 </script>
