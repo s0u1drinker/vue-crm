@@ -51,6 +51,7 @@
           <select
             id="department"
             v-model="department"
+            @change="setPositions"
           >
             <option value=""></option>
             <option
@@ -69,6 +70,7 @@
             id="position"
             v-model="position"
             :disabled="!department"
+            @change="setTasks"
           >
             <option value=""></option>
             <option
@@ -146,14 +148,12 @@
 </template>
 
 <script>
-// TODO:
-// 1. Фильтрация должностей по выбранному подразделению;
-// 2. Фильтрация задач по должности.
 import { mapGetters, mapMutations } from 'vuex'
 import PDFmake from 'pdfmake/build/pdfmake'
 import PDFfonts from 'pdfmake/build/vfs_fonts'
 
 import OrganizationService from '@/services/OrganizationService'
+import LogService from '@/services/LogService'
 
 import BlankISPDN from '@/templates/Blank_ISPDN.js'
 
@@ -190,6 +190,18 @@ export default {
     // Флаг заполненности всех полей формы
     allFieldsAreFilled: function () {
       return (this.surname && this.name && this.patronymic && this.department && this.position)
+    },
+    // Название подразделения
+    selectedDepartment: function () {
+      return this.getRegData.filter(item => { return item._id.id === this.department })[0]
+    },
+    // Название должности
+    selectedPosition: function () {
+      return this.positions.filter(item => { return item._id === this.position })[0]
+    },
+    // Список задач в строке
+    selectedTasks: function () {
+      return this.tasks.filter(item => { return this.checkedTasks.includes(item._id) })
     }
   },
   methods: {
@@ -197,6 +209,8 @@ export default {
     // Показывает форму с данными пользователя
     showDataForm: function () {
       this.forms.tasks.show = false
+      this.checkedTasks = []
+      this.forms.tasks.error = ''
     },
     // Показывает форму с задачами
     showTasksForm: function () {
@@ -229,6 +243,15 @@ export default {
         position: this.position,
         tasks: this.checkedTasks
       })
+
+      await LogService.addLog({
+        surname: this.surname,
+        name: this.name,
+        patronymic: this.patronymic,
+        department: this.selectedDepartment._id.abbr,
+        position: this.selectedPosition.name,
+        tasks: this.selectedTasks.map(task => { return `${task.task[0].toLowerCase()}${task.task.slice(1)}` }).join(', ')
+      })
     },
     // Возвращает картинку в base64
     imageToBase64: function (url) {
@@ -258,18 +281,15 @@ export default {
     generatePDF: async function () {
       const sign = await this.imageToBase64('img/blanks/sign.png')
       const print = await this.imageToBase64('img/blanks/print.png')
-      const position = this.getPositions.filter(item => { return item._id === this.position })[0]
-      const department = this.getDepartments.filter(item => { return item._id === this.department })[0]
-      const tasks = this.getRegistrationTasks.filter(item => { return this.checkedTasks.includes(item._id) })
 
       BlankISPDN.setData({
         user: `${this.capitalLetter(this.surname)} ${this.capitalLetter(this.name)} ${this.capitalLetter(this.patronymic)}`,
-        position: position.name,
-        department: department.abbr,
-        tasks,
+        position: this.selectedPosition.name,
+        department: this.selectedDepartment._id.abbr,
+        tasks: this.selectedTasks,
         headDepartment: {
-          name: (position._id === '5ee888b8d0a9df15a486a0d7') ? 'Дворецкая М.С.' : department.head.name,
-          position: (position._id === '5ee888b8d0a9df15a486a0d7') ? 'Зам. гл. врача по мед. части' : department.head.position
+          name: (this.selectedPosition._id === '5ee888b8d0a9df15a486a0d7') ? 'Дворецкая М.С.' : this.selectedDepartment._id.head.name,
+          position: (this.selectedPosition._id === '5ee888b8d0a9df15a486a0d7') ? 'Зам. гл. врача по мед. части' : this.selectedDepartment._id.head.position
         },
         date: {
           day: new Date().getDate(),
@@ -280,7 +300,16 @@ export default {
         print
       })
 
-      PDFmake.createPdf(BlankISPDN.getData()).download('output.pdf')
+      PDFmake.createPdf(BlankISPDN.getData()).download('blank_ISPDN.pdf')
+    },
+    // Подгружает список должностей в зависимости от выбранного подразделения
+    setPositions: function () {
+      this.position = ''
+      this.positions = this.getRegData.filter(item => { return item._id.id === this.department })[0].positions
+    },
+    // Подгружает список задач в зависимости от выбранной должности
+    setTasks: function () {
+      this.tasks = this.positions.filter(item => { return item._id === this.position })[0].tasks
     }
   },
   mounted: async function () {
