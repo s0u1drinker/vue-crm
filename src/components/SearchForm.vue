@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   name: 'SearchForm',
   data () {
@@ -16,10 +18,27 @@ export default {
       searchText: ''
     }
   },
-  methods: {
-    search: function () {
-      alert('I will not look for this: ' + this.searchText)
+  computed: {
+    ...mapGetters(['getSearchText']),
+    currentRoute: function () {
+      return this.$route.name
+    },
+    currentRouteSearch: function () {
+      return this.currentRoute === 'Search'
     }
+  },
+  methods: {
+    ...mapMutations(['setSearchText']),
+    search: function () {
+      this.setSearchText(this.searchText)
+
+      if (!this.currentRouteSearch) {
+        this.$router.push('/search')
+      }
+    }
+  },
+  mounted: function () {
+    this.searchText = (this.currentRouteSearch) ? this.getSearchText : ''
   }
 }
 </script>

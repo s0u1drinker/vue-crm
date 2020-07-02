@@ -6,6 +6,7 @@ import adverts from './modules/adverts'
 import user from './modules/user'
 import organization from './modules/organization'
 import phonebook from './modules/phonebook'
+import search from './modules/search'
 
 Vue.use(Vuex)
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     adverts,
     user,
     organization,
-    phonebook
+    phonebook,
+    search
   }
 })

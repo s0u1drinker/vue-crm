@@ -17,6 +17,14 @@ const routes = [
     }
   },
   {
+    path: '/search',
+    name: 'Search',
+    component: () => import('../views/Search.vue'),
+    meta: {
+      checkAuth: true
+    }
+  },
+  {
     path: '/phonebook',
     name: 'Phonebook',
     component: () => import('../views/Phones.vue'),
