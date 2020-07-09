@@ -3,12 +3,15 @@
     <img src="@/assets/logo.svg" alt="" class="logo">
     <form @submit.prevent>
       <input type="text" class="input" id="searchtext" placeholder="Введите номер документа/дату/отправителя" v-model="searchText">
-      <button class="button"><i class="icon icon-search" @click="search"></i></button>
+      <button class="button"><i class="icon icon-search" @click="prepareSearch"></i></button>
     </form>
   </div>
 </template>
 
 <script>
+// TODO:
+// 1. Отправка по Enter;
+// 2. Не вся кнопка нажимается.
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -29,11 +32,14 @@ export default {
   },
   methods: {
     ...mapMutations(['setSearchText']),
-    search: function () {
+    // Поиск данных
+    prepareSearch: function () {
       this.setSearchText(this.searchText)
 
       if (!this.currentRouteSearch) {
         this.$router.push('/search')
+      } else {
+        this.$emit('search', '')
       }
     }
   },

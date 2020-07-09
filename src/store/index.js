@@ -12,11 +12,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    monthsDeclension: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+    monthsDeclension: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
+    filesIcons: {
+      rar: 'winrar',
+      zip: 'winrar',
+      pdf: 'acrobat',
+      doc: 'word',
+      docx: 'word',
+      xls: 'excel',
+      xlsx: 'excel',
+      ppt: 'powerpoint',
+      pptx: 'powerpoint'
+    }
   },
   getters: {
     getMonthsDeclension: state => {
       return state.monthsDeclension
+    },
+    getFilesIcons: state => {
+      return state.filesIcons
     }
   },
   mutations: {},

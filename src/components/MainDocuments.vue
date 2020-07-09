@@ -43,7 +43,7 @@ export default {
   methods: {
     // Возвращает наименование владельца документ
     ownerName: (link) => {
-      return (link.owner.declension) ? link.owner.declension : (link.owner.attr) ? link.owner.attr : (link.owner.translit_owner_declension) ? link.owner.fullname : ''
+      return (link.owner.declension) ? link.owner.declension : (link.owner.abbr) ? link.owner.abbr : (link.owner.translit_owner_declension) ? link.owner.fullname : ''
     },
     // Сбрасывает флаг у "табов", копирует данные в массив для показа ссылок
     setLinksToShow: function (index) {
