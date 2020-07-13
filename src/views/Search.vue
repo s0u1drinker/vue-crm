@@ -13,8 +13,6 @@
 </template>
 
 <script>
-// TODO:
-// 1. Пагинация.
 import { mapGetters } from 'vuex'
 
 import DocumentService from '@/services/DocumentService'
