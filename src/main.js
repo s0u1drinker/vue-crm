@@ -13,7 +13,7 @@ router.beforeEach(async (to, from, next) => {
   // Если переход осуществлялся напрямую
   if (from.name === null) {
     // Проверяем авторизован ли пользователь
-    const check = await AuthService.check()
+    const check = await AuthService.login({ checkUser: true })
 
     if (check.data.err) {
       // Если проверка по какой-то причине не удалась
@@ -23,15 +23,22 @@ router.beforeEach(async (to, from, next) => {
     if (check.data.auth) {
       // Если пользователь авторизован - запускаем соответствующую мутацию
       store.commit('userLogIn', check.data.username)
+      store.commit('updateNavigation', check.data.modules)
     }
   }
 
-  // Если переход осуществляется авторизованным пользователем на страницу авторизации или регистрации
-  if ((to.meta.notAuth) && (store.getters.getUserAuth)) {
-    router.push('/')
+  // Если переход осуществляется:
+  // 1. Авторизованным пользователем на страницу авторизации или регистрации;
+  // 2. Неавторизованным пользователем на страницу только для авторизованных пользователей.
+  if (((to.meta.onlyAuth) && (!store.getters.getUserAuth)) || ((to.meta.notAuth) && (store.getters.getUserAuth))) {
+    // Отправляем на главную
+    next({
+      name: 'Main'
+    })
+  } else {
+    // Иначе далее по списку
+    next()
   }
-
-  next()
 })
 
 new Vue({

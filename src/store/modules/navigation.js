@@ -1,39 +1,46 @@
 const state = {
-  navLinks: [
+  coreNavLinks: [
     {
-      id: '1',
-      moduleName: 'Main',
+      module_name: 'Main',
       title: 'Главная',
-      quickAccess: true,
+      quick_access: true,
       icon: 'home'
     },
     {
-      id: '2',
-      moduleName: 'Events',
+      module_name: 'Events',
       title: 'Список мероприятий',
-      quickAccess: true,
+      quick_access: true,
       icon: 'calendar'
     },
     {
-      id: '3',
-      moduleName: 'Phonebook',
+      module_name: 'Phonebook',
       title: 'Телефонный справочник',
-      quickAccess: true,
+      quick_access: true,
       icon: 'phonebook'
     }
-  ]
+  ],
+  userLinks: []
 }
 
 const getters = {
   getNavLinks: state => {
-    return state.navLinks
+    return state.userLinks
   },
   getQuickAccessLinks: state => {
-    return state.navLinks.filter(link => link.quickAccess)
+    const links = (state.userLinks.length) ? state.userLinks : state.coreNavLinks
+
+    return links.filter(link => link.quick_access)
   }
 }
 
-const mutations = {}
+const mutations = {
+  updateNavigation: (state, modules) => {
+    state.userLinks = state.coreNavLinks.concat(modules)
+  },
+  clearNavigation: (state) => {
+    state.userLinks = []
+  }
+}
 
 const actions = {}
 

@@ -28,7 +28,7 @@ export default {
     ...mapGetters(['getUsername'])
   },
   methods: {
-    ...mapMutations(['userLogOut']),
+    ...mapMutations(['userLogOut', 'clearNavigation']),
     logOut: async function () {
       const response = await AuthService.logout()
 
@@ -36,6 +36,12 @@ export default {
         alert('Возникла непредвиденная ошибка!')
       } else {
         this.userLogOut()
+        this.clearNavigation()
+        // Если текущая страница отмечена для показа только авторизованным пользователям
+        if (this.$route.meta.onlyAuth) {
+          // Перенаправляем на главную
+          this.$router.push('/')
+        }
       }
     },
     settings: () => {

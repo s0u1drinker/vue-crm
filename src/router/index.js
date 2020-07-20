@@ -11,34 +11,22 @@ const routes = [
   {
     path: '/',
     name: 'Main',
-    component: Main,
-    meta: {
-      checkAuth: true
-    }
+    component: Main
   },
   {
     path: '/search',
     name: 'Search',
-    component: () => import('../views/Search.vue'),
-    meta: {
-      checkAuth: true
-    }
+    component: () => import('../views/Search.vue')
   },
   {
     path: '/phonebook',
     name: 'Phonebook',
-    component: () => import('../views/Phones.vue'),
-    meta: {
-      checkAuth: true
-    }
+    component: () => import('../views/Phones.vue')
   },
   {
     path: '/events',
     name: 'Events',
-    component: () => import('../views/Events.vue'),
-    meta: {
-      checkAuth: true
-    }
+    component: () => import('../views/Events.vue')
   },
   {
     path: '/auth',
@@ -54,6 +42,38 @@ const routes = [
     component: () => import('../views/Reg.vue'),
     meta: {
       notAuth: true
+    }
+  },
+  {
+    path: '/registry',
+    name: 'Registry',
+    component: () => import('../views/Registry.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
+    path: '/doc-management',
+    name: 'DocManagement',
+    component: () => import('../views/DocManagement.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
+    path: '/stat',
+    name: 'Stat',
+    component: () => import('../views/Stat.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
+    path: '/site',
+    name: 'Site',
+    component: () => import('../views/Site.vue'),
+    meta: {
+      onlyAuth: true
     }
   },
   {

@@ -2,7 +2,7 @@
   <nav class="navigation" :class="[ getUserConfig.pinNavigation ? 'navigation_fixed' : '' ]">
     <ul class="navigation__list">
       <li class="navigation__item" v-for="navItem in getNavLinks" :key="navItem.id">
-        <router-link class="navigation__link" :to="{name: navItem.moduleName}">
+        <router-link class="navigation__link" :to="{name: navItem.module_name}">
           <i class="icon" :class="[ (navItem.icon ? 'icon-' + navItem.icon : '') ]"></i>
           <span>{{ navItem.title }}</span>
         </router-link>

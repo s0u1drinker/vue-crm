@@ -39,7 +39,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['userLogIn']),
+    ...mapMutations(['userLogIn', 'updateNavigation']),
     logIn: async function () {
       const response = await AuthService.login({
         login: this.login,
@@ -51,19 +51,11 @@ export default {
       } else {
         if (response.data.auth) {
           this.userLogIn(response.data.username)
+          this.updateNavigation(response.data.modules)
           this.$router.push('/')
         } else {
           this.formError = 'Что-то пошло не так. Повторите запрос.'
         }
-      }
-    },
-    logout: async function () {
-      const response = await AuthService.logout()
-
-      if (response.data.err) {
-        alert('Возникла непредвиденная ошибка!')
-      } else {
-        this.$router.push('/')
       }
     }
   }

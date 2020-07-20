@@ -8,7 +8,7 @@
       >
         <router-link
           class="qa-links__link"
-          :to="{name: link.moduleName}"
+          :to="{name: link.module_name}"
         >{{ link.title }}</router-link>
       </li>
   </ul>
@@ -26,7 +26,7 @@ export default {
     quickAccessLinks: function () {
       const route = this.$route.name
 
-      return this.getQuickAccessLinks.filter((link) => link.moduleName !== route)
+      return this.getQuickAccessLinks.filter((link) => ((link.module_name !== route) && (+link.quick_access)))
     },
     classOffset: function () {
       return this.offset ? `qa-links_offset_${this.offset}` : false
