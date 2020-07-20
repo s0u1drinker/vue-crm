@@ -3,7 +3,7 @@ const state = {
     auth: false,
     name: '',
     config: {
-      pinNavigation: false
+      pinNavigation: true
     }
   }
 }
