@@ -1,6 +1,6 @@
 <template>
-  <nav class="navigation" :class="[ getUserConfig.pinNavigation ? 'navigation_fixed' : '' ]">
-    <ul class="navigation__list">
+  <nav class="navigation">
+    <ul class="navigation__list" :class="[ getUserConfig.pinNavigation ? 'navigation__list_fixed' : '' ]">
       <li class="navigation__item" v-for="navItem in getNavLinks" :key="navItem.id">
         <router-link class="navigation__link" :to="{name: navItem.module_name}">
           <i class="icon" :class="[ (navItem.icon ? 'icon-' + navItem.icon : '') ]"></i>
@@ -28,36 +28,44 @@ export default {
 
 <style lang='scss' scoped>
 .navigation {
-  @include def-box-shadow;
-  @include def-border-radius;
-  @include transition(width);
-  background-color: $white;
-  border: 1px solid $gray_light;
-  box-sizing: border-box;
+  align-items: flex-start;
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: flex-end;
   margin-top: 1.5rem;
   position: relative;
-  width: 3.75rem;
+  width: 100%;
 
-  &:hover,
-  &_fixed {
-    width: 100%;
+  &__list {
+    @include def-box-shadow;
+    @include def-border-radius;
+    @include transition(width);
+    background-color: $white;
+    border: 1px solid $gray_light;
+    box-sizing: border-box;
+    width: 3.75rem;
 
-    .navigation__link span {
-      opacity: 1;
+    &:hover,
+    &_fixed {
+      width: 100%;
+
+      .navigation__link span {
+        opacity: 1;
+      }
+
+      .navigation__link:not(.navigation__link_active) .icon {
+        color: $black;
+      }
     }
 
-    .navigation__link:not(.navigation__link_active) .icon {
-      color: $black;
-    }
-  }
+    &_fixed {
 
-  &_fixed {
-
-    .navigation__pin {
-      color: $cardio;
-
-      &:hover {
+      & ~ .navigation__pin {
         color: $cardio;
+
+        &:hover {
+          color: $cardio;
+        }
       }
     }
   }

@@ -1,10 +1,17 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :class="[!getUserAuth ? 'sidebar_guest' : '']">
     <fragment v-if="getUserAuth">
       <UserPanel />
       <Navigation />
     </fragment>
     <GuestPanel v-else />
+    <a
+      class="sidebar__site-link"
+      href="https://vokkc34.ru/"
+      target="_blank"
+    >
+      <i class="icon icon-link"></i>Оф. сайт ГБУЗ &laquo;ВОККЦ&raquo;
+    </a>
   </div>
 </template>
 
@@ -30,7 +37,6 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar{
-  align-items: flex-end;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -40,5 +46,30 @@ export default {
   top: 0;
   flex: 1 0 auto;
   min-width: 23rem;
+
+  &_guest {
+    justify-content: space-between;
+  }
+
+  &__site-link {
+    @include def-border-radius;
+    @include def-box-shadow;
+    @include transition((background-color, color));
+    box-sizing: border-box;
+    color: $primary;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+
+    &:hover {
+      background-color: $gray_light;
+      color: $dark;
+    }
+
+    i.icon {
+      margin-right: .5rem;
+    }
+  }
 }
 </style>
