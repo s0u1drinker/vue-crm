@@ -16,21 +16,46 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+
+import { bus } from '../main'
 
 export default {
   name: 'QuickAccessLinks',
   props: ['offset'],
+  data: function () {
+    return {
+      quickAccessLinks: []
+    }
+  },
   computed: {
     ...mapGetters(['getQuickAccessLinks']),
-    quickAccessLinks: function () {
-      const route = this.$route.name
-
-      return this.getQuickAccessLinks.filter((link) => ((link.module_name !== route) && (+link.quick_access)))
-    },
     classOffset: function () {
       return this.offset ? `qa-links_offset_${this.offset}` : false
     }
+  },
+  methods: {
+    ...mapMutations(['updateNavLinks', 'resetNavLinks']),
+    // Убираем из списка ссылок быстрого доступа текущую страницу и записываем в переменную
+    setQuickAccessLinks: function () {
+      const route = this.$route.name
+
+      this.quickAccessLinks = this.getQuickAccessLinks.filter((link) => (link.module_name !== route))
+    }
+  },
+  mounted: function () {
+    // Слушаем глобальную шину данных
+    bus.$on('forceUpdateQuickAccessLinks', () => {
+      this.resetNavLinks()
+      this.setQuickAccessLinks()
+    })
+
+    // Если ссылок нет (первое обращение к странице) - обновляемся
+    if (!this.getQuickAccessLinks.length) {
+      this.updateNavLinks()
+    }
+
+    this.setQuickAccessLinks()
   }
 }
 </script>

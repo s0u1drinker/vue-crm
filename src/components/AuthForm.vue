@@ -27,7 +27,7 @@
 <script>
 import AuthService from '@/services/AuthService'
 
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AuthForm',
@@ -39,7 +39,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['userLogIn', 'updateNavigation']),
+    ...mapActions(['setUserData']),
+    // Вход в систему
     logIn: async function () {
       const response = await AuthService.login({
         login: this.login,
@@ -50,8 +51,7 @@ export default {
         this.formError = response.data.descr
       } else {
         if (response.data.auth) {
-          this.userLogIn(response.data.username)
-          this.updateNavigation(response.data.modules)
+          this.setUserData(response.data)
           this.$router.push('/')
         } else {
           this.formError = 'Что-то пошло не так. Повторите запрос.'

@@ -20,15 +20,18 @@
 <script>
 import AuthService from '@/services/AuthService'
 
+import { bus } from '../main'
+
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'UserPanel',
   computed: {
-    ...mapGetters(['getUsername'])
+    ...mapGetters(['getUsername', 'getNavLinks'])
   },
   methods: {
-    ...mapMutations(['userLogOut', 'clearNavigation']),
+    ...mapMutations(['userLogOut', 'updateNavLinks']),
+    // Выход из системы
     logOut: async function () {
       const response = await AuthService.logout()
 
@@ -36,7 +39,8 @@ export default {
         alert('Возникла непредвиденная ошибка!')
       } else {
         this.userLogOut()
-        this.clearNavigation()
+        this.updateNavLinks()
+        bus.$emit('forceUpdateQuickAccessLinks')
         // Если текущая страница отмечена для показа только авторизованным пользователям
         if (this.$route.meta.onlyAuth) {
           // Перенаправляем на главную

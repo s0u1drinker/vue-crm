@@ -21,9 +21,8 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (check.data.auth) {
-      // Если пользователь авторизован - запускаем соответствующую мутацию
-      store.commit('userLogIn', check.data.username)
-      store.commit('updateNavigation', check.data.modules)
+      // Если пользователь авторизован - обновляем хранилище
+      store.dispatch('setUserData', check.data)
     }
   }
 
@@ -40,6 +39,9 @@ router.beforeEach(async (to, from, next) => {
     next()
   }
 })
+
+// Глобальная шина событий
+export const bus = new Vue()
 
 new Vue({
   router,
