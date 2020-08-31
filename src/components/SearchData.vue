@@ -20,7 +20,7 @@
               <span>{{ extensions[index] }}</span>
             </div>
             <div class="searchdata__file-name">
-              {{ `${item.type} ${ownerName(item.owner)} №${item.doc_number} от ${item.doc_date}` }}
+              <span class="bold">{{ `${item.type} ${ownerName(item.owner)} №${item.doc_number} от ${item.doc_date}` }}</span>
               <br />
               &laquo;{{ item.doc_name }}&raquo;
             </div>
