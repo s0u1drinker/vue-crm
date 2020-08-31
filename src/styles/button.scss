@@ -82,6 +82,20 @@ a.button {
     }
   }
 
+  &_outline {
+    border: 1px solid;
+
+    &_cardio {
+      border-color: $cardio;
+      color: $cardio;
+
+      &:hover {
+        background-color: $cardio;
+        color: $white;
+      }
+    }
+  }
+
   &_inline {
     display: inline-block;
     padding: 0;

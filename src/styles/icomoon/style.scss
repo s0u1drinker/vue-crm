@@ -3,9 +3,9 @@
 @font-face {
   font-family: '#{$icomoon-font-family}';
   src:
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?62acu8') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?62acu8') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?62acu8##{$icomoon-font-family}') format('svg');
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?8c5n09') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?8c5n09') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?8c5n09##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,19 +26,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-link {
+.icon-expand {
   &:before {
-    content: $icon-link; 
+    content: $icon-expand; 
   }
 }
-.icon-clear {
+.icon-focus {
   &:before {
-    content: $icon-clear; 
-  }
-}
-.icon-close {
-  &:before {
-    content: $icon-close; 
+    content: $icon-focus; 
   }
 }
 .icon-doc-management {
@@ -284,6 +279,21 @@
     content: $icon-search; 
   }
 }
+.icon-link {
+  &:before {
+    content: $icon-link; 
+  }
+}
+.icon-clear {
+  &:before {
+    content: $icon-clear; 
+  }
+}
+.icon-close {
+  &:before {
+    content: $icon-close; 
+  }
+}
 .icon-chevron {
   &:before {
     content: $icon-chevron; 
@@ -312,6 +322,46 @@
 .icon-tag {
   &:before {
     content: $icon-tag; 
+  }
+}
+.icon-display {
+  &:before {
+    content: $icon-display; 
+  }
+}
+.icon-play {
+  &:before {
+    content: $icon-play; 
+  }
+}
+.icon-pause {
+  &:before {
+    content: $icon-pause; 
+  }
+}
+.icon-volume-high {
+  &:before {
+    content: $icon-volume-high; 
+  }
+}
+.icon-volume-medium {
+  &:before {
+    content: $icon-volume-medium; 
+  }
+}
+.icon-volume-low {
+  &:before {
+    content: $icon-volume-low; 
+  }
+}
+.icon-volume-none {
+  &:before {
+    content: $icon-volume-none; 
+  }
+}
+.icon-volume-mute {
+  &:before {
+    content: $icon-volume-mute; 
   }
 }
 

@@ -7,6 +7,7 @@ import user from './modules/user'
 import organization from './modules/organization'
 import phonebook from './modules/phonebook'
 import search from './modules/search'
+import video from './modules/video'
 
 Vue.use(Vuex)
 
@@ -23,7 +24,8 @@ export default new Vuex.Store({
       xlsx: 'excel',
       ppt: 'powerpoint',
       pptx: 'powerpoint'
-    }
+    },
+    fileServerIP: 'localhost:8081'
   },
   getters: {
     getMonthsDeclension: state => {
@@ -31,6 +33,9 @@ export default new Vuex.Store({
     },
     getFilesIcons: state => {
       return state.filesIcons
+    },
+    getFileServerIP: state => {
+      return state.fileServerIP
     }
   },
   mutations: {},
@@ -43,6 +48,7 @@ export default new Vuex.Store({
     user,
     organization,
     phonebook,
-    search
+    search,
+    video
   }
 })

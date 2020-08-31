@@ -4,10 +4,10 @@
       offset="5"
     />
     <PageHeader
-      title="Телефонный справочник"
+      title="Видео"
       :logo="true"
     />
-    <Phonebook />
+    <VideoContent />
   </main-layout>
 </template>
 
@@ -16,15 +16,15 @@ import MainLayout from '@/layouts/MainLayout'
 
 import PageHeader from '@/components/PageHeader'
 import QuickAccessLinks from '@/components/QuickAccessLinks'
-import Phonebook from '@/components/Phonebook'
+import VideoContent from '@/components/VideoContent'
 
 export default {
-  name: 'Phones',
+  name: 'Videos',
   components: {
     MainLayout,
     PageHeader,
     QuickAccessLinks,
-    Phonebook
+    VideoContent
   }
 }
 </script>

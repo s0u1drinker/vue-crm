@@ -29,6 +29,21 @@ const routes = [
     component: () => import('../views/Events.vue')
   },
   {
+    path: '/videos',
+    name: 'Videos',
+    component: () => import('../views/Videos.vue')
+  },
+  {
+    path: '/channel/:id',
+    name: 'Channel',
+    component: () => import('../views/Channel.vue')
+  },
+  {
+    path: '/video/:id',
+    name: 'Video',
+    component: () => import('../views/Video.vue')
+  },
+  {
     path: '/auth',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),

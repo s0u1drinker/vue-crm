@@ -20,10 +20,17 @@ const state = {
       title: 'Телефонный справочник',
       quick_access: true,
       icon: 'phonebook'
+    },
+    {
+      _id: '4',
+      module_name: 'Videos',
+      title: 'Видео',
+      quick_access: true,
+      icon: 'display'
     }
   ],
   userNavLinks: [],
-  maxQuickAccessLinks: 3
+  maxQuickAccessLinks: 4
 }
 
 const getters = {

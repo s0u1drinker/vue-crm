@@ -5,7 +5,7 @@
     />
     <PageHeader
       title="Список мероприятий"
-      logo=true
+      :logo="true"
     />
     <EventsDriver />
   </main-layout>

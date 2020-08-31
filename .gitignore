@@ -2,6 +2,7 @@
 node_modules
 /dist
 /public/files
+/public/img/blanks
 
 # local env files
 .env.local

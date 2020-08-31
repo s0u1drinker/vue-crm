@@ -1,5 +1,6 @@
 <template>
   <div class="qa-links" :class="classOffset">
+    <img v-if="logo" src="@/assets/logo.svg" alt="" class="logo">
     <ul class="qa-links__list">
       <li
         class="qa-links__item"
@@ -11,7 +12,7 @@
           :to="{name: link.module_name}"
         >{{ link.title }}</router-link>
       </li>
-  </ul>
+    </ul>
   </div>
 </template>
 
@@ -22,7 +23,16 @@ import { bus } from '../main'
 
 export default {
   name: 'QuickAccessLinks',
-  props: ['offset'],
+  props: {
+    offset: {
+      type: String,
+      default: ''
+    },
+    logo: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function () {
     return {
       quickAccessLinks: []
@@ -40,7 +50,9 @@ export default {
     setQuickAccessLinks: function () {
       const route = this.$route.name
 
-      this.quickAccessLinks = this.getQuickAccessLinks.filter((link) => (link.module_name !== route))
+      this.quickAccessLinks = this.getQuickAccessLinks.filter((link) => {
+        return link.module_name !== route
+      })
     }
   },
   mounted: function () {
@@ -62,6 +74,8 @@ export default {
 
 <style lang="scss" scoped>
 .qa-links {
+  align-items: center;
+  display: flex;
 
   &_offset {
 
@@ -92,6 +106,11 @@ export default {
     &:hover {
       color: $cardio;
     }
+  }
+
+  .logo {
+    margin-right: 1.25rem;
+    width: 2rem;
   }
 }
 </style>

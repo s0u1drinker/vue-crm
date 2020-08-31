@@ -40,6 +40,7 @@ export default {
       } else {
         this.userLogOut()
         this.updateNavLinks()
+        // Обновляем список ссылок быстрого доступа
         bus.$emit('forceUpdateQuickAccessLinks')
         // Если текущая страница отмечена для показа только авторизованным пользователям
         if (this.$route.meta.onlyAuth) {
