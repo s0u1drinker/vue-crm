@@ -92,6 +92,14 @@ const routes = [
     }
   },
   {
+    path: '/inventory',
+    name: 'Inventory',
+    component: () => import('../views/Inventory.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
     path: '*',
     component: () => import('../views/404.vue')
   }
