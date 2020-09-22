@@ -52,10 +52,6 @@ export default {
       .navigation__link span {
         opacity: 1;
       }
-
-      .navigation__link:not(.navigation__link_active) .icon {
-        color: $black;
-      }
     }
 
     &_fixed {
@@ -87,22 +83,31 @@ export default {
     }
 
     .icon {
-      font-size: 1.75rem;
-    }
+      color: $gray;
+      display: flex;
+      height: 2rem;
+      width: 2rem;
 
-    &:not(&_active) .icon {
-      color: $gray_dark;
+      &::before {
+        font-size: 1.6rem;
+        margin: auto;
+      }
     }
 
     span {
       @include transition(opacity);
-      margin-left: .5rem;
+      margin-left: .75rem;
       opacity: 0;
     }
 
     &_active {
-      color: $cardio;
+      $active-link-color: $cardio;
+      color: $active-link-color;
       pointer-events: none;
+
+      .icon {
+        color: $active-link-color;
+      }
     }
   }
 
