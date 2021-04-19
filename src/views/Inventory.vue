@@ -9,6 +9,7 @@
     />
     <Elements
       :list="depList"
+      :showEffect="'slider'"
       v-on:valueSelected="updateTableBody"
     />
     <Table

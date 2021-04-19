@@ -63,6 +63,19 @@ select {
   padding: .5rem 1rem;
 }
 
+.select {
+
+  &_placeholder {
+    color: $gray_dark;
+    font-style: italic;
+
+    option:not(:disabled) {
+      color: $black;
+      font-style: normal;
+    }
+  }
+}
+
 textarea {
   padding: .5rem;
   resize: none;
@@ -96,6 +109,21 @@ table {
       align-items: center;
     }
   }
+
+  &_jc {
+
+    &_around {
+      justify-content: space-around;
+    }
+
+    &_between {
+      justify-content: space-between;
+    }
+
+    &_center {
+      justify-content: center;
+    }
+  }
 }
 
 .italic {
@@ -118,6 +146,29 @@ table {
     &_dark {
       color: $gray_dark;
     }
+  }
+}
+
+.m {
+
+  &_around {
+    margin: 1rem;
+  }
+
+  &_updown {
+    margin: 1rem 0;
+  }
+
+  &_sides {
+    margin: 0 1rem;
+  }
+
+  &_left {
+    margin-left: 1rem;
+  }
+
+  &_right {
+    margin-right: 1rem;
   }
 }
 

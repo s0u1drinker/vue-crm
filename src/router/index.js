@@ -76,6 +76,38 @@ const routes = [
     }
   },
   {
+    path: '/doc-management/register/:id',
+    name: 'DMRegister',
+    component: () => import('../views/DocManagementRegister.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
+    path: '/doc-management/add-register',
+    name: 'DMAddRegister',
+    component: () => import('../views/DocManagementAddRegister.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
+    path: '/doc-management/edit-ref-books',
+    name: 'DMEditRefBooks',
+    component: () => import('../views/DocManagementEditRefBooks.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
+    path: '/doc-management/search',
+    name: 'DMSearch',
+    component: () => import('../views/DocManagementSearch.vue'),
+    meta: {
+      onlyAuth: true
+    }
+  },
+  {
     path: '/stat',
     name: 'Stat',
     component: () => import('../views/Stat.vue'),

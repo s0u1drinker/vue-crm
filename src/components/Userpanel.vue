@@ -83,6 +83,7 @@ export default {
     margin-top: 1rem;
 
     .icon {
+      color: $gray;
       font-size: 1rem;
       margin-left: .375rem;
       margin-right: .875rem;

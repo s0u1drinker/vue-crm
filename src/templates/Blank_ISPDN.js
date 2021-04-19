@@ -222,7 +222,7 @@ export const getData = () => {
       },
       {
         table: {
-          widths: [100, 20, '*', 20, 100],
+          widths: [120, 20, '*', 20, 100],
           body: [
             [
               {

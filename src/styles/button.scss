@@ -13,7 +13,7 @@ button {
 }
 
 a.button {
-  display: inline-block;
+  display: flex;
 }
 
 .button {
@@ -94,6 +94,15 @@ a.button {
         color: $white;
       }
     }
+
+    &_gray {
+      border-color: $gray_dark;
+
+      &:hover {
+        background-color: $gray_light;
+        border-color: $gray_dark;
+      }
+    }
   }
 
   &_inline {
@@ -115,7 +124,24 @@ a.button {
   padding: 0 $padding 0 0;
 
   .icon {
+    @include transition((background-color, color));
     margin-right: $padding;
     padding: .5rem $padding;
+  }
+
+  &.button_outline {
+    border-color: $gray;
+
+    &:hover {
+      background-color: $gray_light;
+
+      .icon {
+        background-color: $gray;
+      }
+    }
+
+    .icon {
+      background-color: $gray_light;
+    }
   }
 }

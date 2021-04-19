@@ -29,6 +29,10 @@ export default {
     position: relative;
     text-align: center;
 
+    a.button {
+      display: inline-block;
+    }
+
     & + & {
 
       &::before {

@@ -1,5 +1,8 @@
 <template>
-  <div class="elements">
+  <div
+    class="elements"
+    :class="[ showEffect ? `elements_effect_${showEffect}` : 'elements_effect_default' ]"
+  >
     <ul class="elements__groups">
       <li
         class="elements__group"
@@ -45,6 +48,10 @@ export default {
     list: {
       type: Array,
       required: true
+    },
+    showEffect: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -68,21 +75,12 @@ export default {
   &__groups,
   &__items {
     @include def-border-gray;
+    @include def-border-radius;
     @include def-box-shadow;
+    overflow: hidden;
   }
 
-  &__items {
-    display: none;
-    opacity: 0;
-
-    &_show {
-      display: block;
-      animation: showBlock .5s ease-out;
-      animation-fill-mode: forwards;
-    }
-  }
-
-  &__item {
+  &__group {
 
     &_active {
       background-color: $gray;
@@ -92,28 +90,13 @@ export default {
 
   &__elements {
     display: flex;
-    margin-left: 4rem;
   }
 
-  &__group {
-    position: relative;
+  &__item {
 
     &_active {
       background-color: $gray;
       pointer-events: none;
-
-      &::after {
-        $triangle_size: 1.25rem;
-        content: '';
-        border-top: $triangle_size solid transparent;
-        border-bottom: $triangle_size solid transparent;
-        border-left: $triangle_size solid $cardio;
-        display: block;
-        position: absolute;
-        right: -($triangle_size + 1.5rem);
-        top: 50%;
-        transform: translateY(-50%);
-      }
     }
   }
 
@@ -126,6 +109,64 @@ export default {
       &:hover {
         background-color: $gray_light;
         cursor: pointer;
+      }
+    }
+  }
+
+  &_effect {
+
+    &_default {
+
+      .elements {
+
+        &__elements {
+          margin-left: 4rem;
+        }
+
+        &__items {
+          display: none;
+          opacity: 0;
+
+          &_show {
+            display: block;
+            animation: showBlock .5s ease-out;
+            animation-fill-mode: forwards;
+          }
+        }
+      }
+    }
+
+    &_slider {
+      overflow: hidden;
+
+      .elements {
+
+        &__groups {
+          @include def-border-color($gray_dark);
+          background-color: $white;
+          position: relative;
+          z-index: 10;
+        }
+
+        &__elements {
+          position: relative;
+          z-index: 0;
+        }
+
+        &__items {
+          display: none;
+          transform: translateX(-100%);
+
+          &_show {
+            display: block;
+            animation: showBlockLikeSlider .5s ease-out;
+            animation-fill-mode: forwards;
+          }
+        }
+
+        &__item {
+          padding-left: 2rem;
+        }
       }
     }
   }

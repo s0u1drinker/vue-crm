@@ -6,6 +6,7 @@
           <th
             v-for="(item, index) in header"
             :key="index"
+            :style="{ width: sizes[index] + '%' }"
           >
             {{ item.title }}
           </th>
@@ -53,6 +54,12 @@ export default {
     showNoData: {
       type: Boolean,
       required: false
+    },
+    sizes: {
+      type: Array,
+      default: function () {
+        return []
+      }
     }
   }
 }
@@ -63,6 +70,7 @@ export default {
 
   &__table {
     @include def-border-gray;
+    @include def-border-radius;
     @include def-box-shadow;
     margin-top: 4rem;
     width: 100%;

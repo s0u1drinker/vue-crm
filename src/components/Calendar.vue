@@ -1,5 +1,8 @@
 <template>
-  <div class="calendar">
+  <div
+    class="calendar"
+    :class="[ cls ]"
+  >
     <div class="calendar__header">
       <span class="calendar__header-weekday" :class="[selectedDate.getDay() > 5 ? 'color_cardio' : 'color_gray']">{{ days[selectedDate.getDay()] }}</span>
       <span class="calendar__header-day">{{ `${selectedDate.getDate()} ${monthsDeclension[selectedDate.getMonth()].toLowerCase()} ${selectedDate.getFullYear()}` }}</span>
@@ -53,6 +56,14 @@
 <script>
 export default {
   name: 'Calendar',
+  props: {
+    cls: {
+      type: Array,
+      default: () => {
+        return ['']
+      }
+    }
+  },
   data: () => {
     return {
       days: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
@@ -184,6 +195,7 @@ export default {
   @include def-border-gray;
   @include def-border-radius;
   @include def-box-shadow;
+  background-color: $white;
   position: relative;
   width: calc(40px * 7 + 32px);
 
